@@ -1,0 +1,3143 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NE-411 Study Hub</title>
+  <meta name="description" content="Offline NE-411 reactor physics revision site for the 9 June exam.">
+  <style>
+    :root {
+      --bg: #091014;
+      --bg-2: #0e171c;
+      --panel: #121d24;
+      --panel-2: #17262d;
+      --line: #263941;
+      --line-2: #35515b;
+      --text: #e7f2f2;
+      --muted: #9eb3b5;
+      --soft: #c4d7d7;
+      --accent: #28d2bf;
+      --accent-2: #f5b35a;
+      --danger: #ff6b6b;
+      --ok: #58d68d;
+      --shadow: 0 20px 70px rgba(0, 0, 0, .35);
+      --radius: 8px;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    html[data-theme="light"] {
+      --bg: #f3f7f7;
+      --bg-2: #e9f0f0;
+      --panel: #ffffff;
+      --panel-2: #f7fbfb;
+      --line: #d5e2e3;
+      --line-2: #bfd2d4;
+      --text: #102025;
+      --muted: #587076;
+      --soft: #2d474f;
+      --accent: #0a8f86;
+      --accent-2: #b96e1e;
+      --danger: #c83f4d;
+      --ok: #188752;
+      --shadow: 0 20px 70px rgba(34, 55, 61, .14);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(90deg, rgba(40, 210, 191, .06) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(40, 210, 191, .05) 1px, transparent 1px),
+        radial-gradient(circle at 80% 0%, rgba(245, 179, 90, .12), transparent 34%),
+        var(--bg);
+      background-size: 64px 64px, 64px 64px, auto, auto;
+      color: var(--text);
+      font-family: var(--sans);
+      letter-spacing: 0;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 292px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px;
+      background: rgba(9, 16, 20, .86);
+      border-right: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      overflow: auto;
+    }
+
+    html[data-theme="light"] .sidebar {
+      background: rgba(255, 255, 255, .86);
+    }
+
+    .brand {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line-2);
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      background: linear-gradient(145deg, rgba(40, 210, 191, .12), rgba(245, 179, 90, .08));
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.14rem;
+      line-height: 1.1;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .nav {
+      display: grid;
+      gap: 6px;
+      margin: 16px 0 20px;
+    }
+
+    .nav button,
+    .tool-button,
+    .seg button,
+    .small-action {
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      color: var(--soft);
+      background: transparent;
+      transition: border-color .18s ease, background .18s ease, color .18s ease, transform .18s ease;
+    }
+
+    .nav button {
+      display: grid;
+      grid-template-columns: 22px 1fr auto;
+      gap: 10px;
+      width: 100%;
+      align-items: center;
+      padding: 11px 12px;
+      text-align: left;
+      font-size: .92rem;
+    }
+
+    [dir="rtl"] .nav button {
+      text-align: right;
+      grid-template-columns: auto 1fr 22px;
+    }
+
+    .nav button:hover,
+    .tool-button:hover,
+    .small-action:hover,
+    .seg button:hover {
+      background: rgba(40, 210, 191, .08);
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    .nav button.active,
+    .seg button.active {
+      background: rgba(40, 210, 191, .13);
+      border-color: rgba(40, 210, 191, .42);
+      color: var(--text);
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: .75rem;
+      font-family: var(--mono);
+    }
+
+    .side-card {
+      border: 1px solid var(--line);
+      background: rgba(18, 29, 36, .72);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    html[data-theme="light"] .side-card {
+      background: rgba(255, 255, 255, .72);
+    }
+
+    .side-card label,
+    .field-label {
+      display: block;
+      color: var(--muted);
+      font-size: .78rem;
+      margin-bottom: 7px;
+    }
+
+    .input,
+    .select,
+    .textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-2);
+      color: var(--text);
+      padding: 10px 11px;
+      outline: none;
+    }
+
+    .textarea {
+      min-height: 78px;
+      resize: vertical;
+    }
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: rgba(40, 210, 191, .65);
+      box-shadow: 0 0 0 3px rgba(40, 210, 191, .12);
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 22px 28px 56px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 18px;
+    }
+
+    .title h2 {
+      margin: 0;
+      font-size: clamp(1.65rem, 3vw, 2.7rem);
+      line-height: 1.05;
+    }
+
+    .title p {
+      margin: 9px 0 0;
+      color: var(--muted);
+      max-width: 820px;
+      line-height: 1.6;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .tool-button,
+    .small-action {
+      min-height: 40px;
+      min-width: 40px;
+      padding: 9px 11px;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .small-action.primary {
+      color: #071313;
+      background: var(--accent);
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    html[data-theme="light"] .small-action.primary {
+      color: white;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px 180px;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat,
+    .panel,
+    .topic-card,
+    .formula-card,
+    .flashcard,
+    .question-card,
+    .figure-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(18, 29, 36, .92), rgba(14, 23, 28, .92));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    html[data-theme="light"] .stat,
+    html[data-theme="light"] .panel,
+    html[data-theme="light"] .topic-card,
+    html[data-theme="light"] .formula-card,
+    html[data-theme="light"] .flashcard,
+    html[data-theme="light"] .question-card,
+    html[data-theme="light"] .figure-card {
+      background: linear-gradient(180deg, #ffffff, #f7fbfb);
+    }
+
+    .stat {
+      padding: 15px;
+      min-height: 98px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 1.55rem;
+      line-height: 1;
+    }
+
+    .stat em {
+      display: block;
+      margin-top: 8px;
+      color: var(--accent);
+      font-style: normal;
+      font-size: .8rem;
+    }
+
+    .stat-bar,
+    .progress-track {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(158, 179, 181, .14);
+      overflow: hidden;
+    }
+
+    .stat-bar {
+      margin-top: 12px;
+    }
+
+    .stat-bar i,
+    .progress-track i {
+      display: block;
+      height: 100%;
+      width: var(--value, 0%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 18px rgba(40, 210, 191, .22);
+    }
+
+    .exam-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.28fr) minmax(340px, .72fr);
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .hero-panel {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(40, 210, 191, .28);
+      border-radius: var(--radius);
+      padding: 22px;
+      background:
+        linear-gradient(135deg, rgba(40, 210, 191, .16), transparent 42%),
+        linear-gradient(180deg, rgba(18, 29, 36, .97), rgba(9, 16, 20, .95));
+      box-shadow: var(--shadow);
+    }
+
+    html[data-theme="light"] .hero-panel {
+      background:
+        linear-gradient(135deg, rgba(10, 143, 134, .12), transparent 42%),
+        linear-gradient(180deg, #ffffff, #eef6f6);
+    }
+
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -90px auto;
+      width: 230px;
+      height: 230px;
+      border: 1px solid rgba(245, 179, 90, .25);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, transparent 28%, rgba(245, 179, 90, .08) 29%, transparent 31%),
+        radial-gradient(circle, transparent 58%, rgba(40, 210, 191, .12) 59%, transparent 61%);
+      pointer-events: none;
+    }
+
+    .hero-panel h3 {
+      margin: 0;
+      max-width: 720px;
+      font-size: clamp(1.45rem, 3vw, 2.35rem);
+      line-height: 1.08;
+    }
+
+    .hero-panel p {
+      margin: 12px 0 0;
+      max-width: 760px;
+      color: var(--soft);
+      line-height: 1.65;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .readiness-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(18, 29, 36, .95), rgba(14, 23, 28, .95));
+      box-shadow: var(--shadow);
+    }
+
+    html[data-theme="light"] .readiness-card {
+      background: linear-gradient(180deg, #ffffff, #f7fbfb);
+    }
+
+    .readiness-score {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .ring {
+      width: 112px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at center, var(--panel) 0 58%, transparent 59%),
+        conic-gradient(var(--accent) var(--score, 0%), rgba(158, 179, 181, .16) 0);
+      border: 1px solid var(--line);
+    }
+
+    html[data-theme="light"] .ring {
+      background:
+        radial-gradient(circle at center, #ffffff 0 58%, transparent 59%),
+        conic-gradient(var(--accent) var(--score, 0%), rgba(88, 112, 118, .18) 0);
+    }
+
+    .ring strong {
+      font-size: 1.42rem;
+      line-height: 1;
+    }
+
+    .readiness-card h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .readiness-card p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .path-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .path-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: rgba(23, 38, 45, .64);
+      min-height: 170px;
+      display: grid;
+      align-content: space-between;
+      gap: 12px;
+    }
+
+    html[data-theme="light"] .path-card {
+      background: #f7fbfb;
+    }
+
+    .path-card.active {
+      border-color: rgba(40, 210, 191, .65);
+      box-shadow: inset 0 0 0 1px rgba(40, 210, 191, .18);
+    }
+
+    .path-card h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .path-card p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.5;
+    }
+
+    .review-lane {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, .46fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .next-topic {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .formula-strip {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .formula-strip .equation {
+      margin: 0;
+    }
+
+    .micro-list {
+      display: grid;
+      gap: 9px;
+      margin-top: 12px;
+    }
+
+    .micro-item {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 9px;
+      color: var(--soft);
+      line-height: 1.45;
+      font-size: .9rem;
+    }
+
+    .micro-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 7px;
+      background: var(--accent-2);
+      box-shadow: 0 0 14px rgba(245, 179, 90, .45);
+    }
+
+    .topic-card .progress-track {
+      margin-top: 2px;
+    }
+
+    .panel {
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .panel-head {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .panel-head h3,
+    .topic-card h3,
+    .formula-card h3,
+    .question-card h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.25;
+    }
+
+    .panel-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .topic-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .topic-card {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .topic-card.done {
+      border-color: rgba(88, 214, 141, .55);
+    }
+
+    .meta {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      align-items: center;
+      color: var(--muted);
+      font-size: .76rem;
+    }
+
+    .tag {
+      border: 1px solid var(--line);
+      background: rgba(40, 210, 191, .07);
+      border-radius: 999px;
+      padding: 4px 8px;
+      color: var(--soft);
+      font-size: .74rem;
+    }
+
+    .path-hit {
+      border-color: rgba(245, 179, 90, .7);
+      box-shadow: 0 0 0 1px rgba(245, 179, 90, .2), var(--shadow);
+    }
+
+    .topic-card p,
+    .question-card p,
+    .formula-card p,
+    .figure-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .simple {
+      border-left: 3px solid var(--accent);
+      background: rgba(40, 210, 191, .08);
+      padding: 11px 12px;
+      color: var(--soft);
+      line-height: 1.55;
+    }
+
+    [dir="rtl"] .simple {
+      border-left: 0;
+      border-right: 3px solid var(--accent);
+    }
+
+    .topic-detail {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(300px, .6fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .notes-list,
+    .clean-list {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--soft);
+      line-height: 1.6;
+    }
+
+    [dir="rtl"] .notes-list,
+    [dir="rtl"] .clean-list {
+      padding-left: 0;
+      padding-right: 20px;
+    }
+
+    .notes-list li,
+    .clean-list li {
+      margin: 8px 0;
+    }
+
+    .equation {
+      overflow-x: auto;
+      white-space: nowrap;
+      border: 1px solid var(--line);
+      background: rgba(4, 10, 12, .44);
+      border-radius: var(--radius);
+      padding: 11px 12px;
+      font-family: var(--mono);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    html[data-theme="light"] .equation {
+      background: #eef6f6;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 11px;
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    [dir="rtl"] th,
+    [dir="rtl"] td {
+      text-align: right;
+    }
+
+    th {
+      color: var(--text);
+      background: rgba(40, 210, 191, .07);
+      font-size: .82rem;
+    }
+
+    td {
+      color: var(--soft);
+      font-size: .88rem;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .formula-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .formula-card {
+      padding: 15px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .flash-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .flashcard {
+      min-height: 280px;
+      padding: 26px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .flashcard h3 {
+      margin: 0;
+      font-size: clamp(1.35rem, 3vw, 2.2rem);
+      line-height: 1.2;
+    }
+
+    .flashcard p {
+      margin: 16px auto 0;
+      max-width: 720px;
+      color: var(--soft);
+      font-size: 1.04rem;
+      line-height: 1.6;
+    }
+
+    .card-index {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: .78rem;
+    }
+
+    [dir="rtl"] .card-index {
+      left: auto;
+      right: 14px;
+    }
+
+    .quiz-options {
+      display: grid;
+      gap: 8px;
+      margin: 13px 0;
+    }
+
+    .quiz-options button {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 12px;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    [dir="rtl"] .quiz-options button {
+      text-align: right;
+    }
+
+    .quiz-options button.correct {
+      border-color: rgba(88, 214, 141, .85);
+      background: rgba(88, 214, 141, .12);
+    }
+
+    .quiz-options button.wrong {
+      border-color: rgba(255, 107, 107, .85);
+      background: rgba(255, 107, 107, .12);
+    }
+
+    .answer-box {
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      background: rgba(245, 179, 90, .08);
+      color: var(--soft);
+      line-height: 1.55;
+    }
+
+    .answer-box.visible {
+      display: block;
+    }
+
+    .check-row {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 10px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--soft);
+      line-height: 1.5;
+    }
+
+    .check-row:last-child {
+      border-bottom: 0;
+    }
+
+    .check-row input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      margin-top: 2px;
+    }
+
+    .seg {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .seg button {
+      min-height: 36px;
+      padding: 8px 10px;
+      font-size: .86rem;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .calc-result {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .mini {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 11px;
+      background: rgba(40, 210, 191, .06);
+      min-height: 78px;
+    }
+
+    .mini span {
+      display: block;
+      color: var(--muted);
+      font-size: .76rem;
+      margin-bottom: 7px;
+    }
+
+    .mini strong {
+      font-family: var(--mono);
+      font-size: .98rem;
+      overflow-wrap: anywhere;
+    }
+
+    .figure-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .figure-card {
+      overflow: hidden;
+    }
+
+    .figure-card img {
+      background: white;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: contain;
+    }
+
+    .figure-card div {
+      padding: 12px;
+    }
+
+    .empty {
+      border: 1px dashed var(--line-2);
+      border-radius: var(--radius);
+      color: var(--muted);
+      padding: 22px;
+      text-align: center;
+    }
+
+    .hide {
+      display: none !important;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    @media (max-width: 1020px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: fixed;
+        z-index: 20;
+        transform: translateX(-105%);
+        transition: transform .22s ease;
+        width: min(330px, 92vw);
+      }
+
+      [dir="rtl"] .sidebar {
+        transform: translateX(105%);
+        right: 0;
+      }
+
+      .sidebar.open,
+      [dir="rtl"] .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .mobile-menu {
+        display: inline-flex;
+      }
+
+      .main {
+        padding: 16px;
+      }
+
+      .search-row,
+      .topbar,
+      .topic-detail,
+      .flash-layout,
+      .exam-hero,
+      .review-lane {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .readiness-score,
+      .next-topic {
+        grid-template-columns: 1fr;
+      }
+
+      .ring {
+        width: 96px;
+      }
+
+      .stat-grid,
+      .topic-grid,
+      .formula-grid,
+      .figure-grid,
+      .path-grid,
+      .calc-grid,
+      .calc-result {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 14px;
+      }
+
+      .topic-card,
+      .formula-card,
+      .flashcard {
+        padding: 14px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+
+      .sidebar,
+      .topbar .toolbar,
+      .search-row,
+      .small-action,
+      .tool-button {
+        display: none !important;
+      }
+
+      .app,
+      .main,
+      .topic-detail,
+      .formula-grid {
+        display: block;
+      }
+
+      .panel,
+      .topic-card,
+      .formula-card,
+      .question-card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"></circle>
+            <path d="M12 2v5M12 17v5M2 12h5M17 12h5M4.9 4.9l3.5 3.5M15.6 15.6l3.5 3.5M19.1 4.9l-3.5 3.5M8.4 15.6l-3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+          </svg>
+        </div>
+        <div>
+          <h1>NE-411</h1>
+          <p data-i18n="brandSub">Exam revision, 9 June 2026</p>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <label for="studentName" data-i18n="student">Student name</label>
+        <input class="input" id="studentName" autocomplete="name" placeholder="Your name">
+      </div>
+
+      <div class="side-card">
+        <label for="pathSelect" data-i18n="path">Study path</label>
+        <select class="select" id="pathSelect"></select>
+      </div>
+
+      <nav class="nav" id="modeNav" aria-label="Study modes"></nav>
+
+      <div class="side-card" id="assignedBox"></div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="title">
+          <h2 id="pageTitle">NE-411 Study Hub</h2>
+          <p id="pageSubtitle">A practical offline revision tool built from the uploaded lecture notes on reactivity, control, feedback coefficients, and point kinetics.</p>
+        </div>
+        <div class="toolbar">
+          <button class="tool-button mobile-menu" id="openMenu" title="Open navigation" aria-label="Open navigation">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+          </button>
+          <button class="tool-button" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 0 0 9 7.5A9 9 0 1 1 12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+            <span id="themeLabel">Light</span>
+          </button>
+          <button class="tool-button" id="langToggle" title="Toggle language" aria-label="Toggle language">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 5h10M9 5v14M5 19h8M15 13h5M17.5 10v3M14.5 19l3-6 3 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <span id="langLabel">AR</span>
+          </button>
+          <button class="tool-button" id="printButton" title="Print current page" aria-label="Print current page">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 8V3h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2M7 14h10v7H7z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"></path></svg>
+          </button>
+        </div>
+      </div>
+
+      <section class="search-row" aria-label="Search and filters">
+        <label class="sr-only" for="searchInput">Search</label>
+        <input class="input" id="searchInput" type="search" placeholder="Search topics, formulas, questions...">
+        <select class="select" id="moduleFilter" aria-label="Filter by module"></select>
+        <select class="select" id="difficultyFilter" aria-label="Filter by difficulty"></select>
+      </section>
+
+      <section class="stat-grid" id="stats"></section>
+      <section id="content"></section>
+    </main>
+  </div>
+
+  <script>
+    const COURSE = {
+      name: "NE-411",
+      examDate: "2026-06-09",
+      sourceFiles: [
+        "Reactivity_Lecture_Notes.docx",
+        "Point Kinetics Analytical_lecture Note.docx"
+      ],
+      figures: [
+        {
+          id: "doppler-reactivity",
+          topic: "doppler",
+          src: "assets/course-images/reactivity-figure-1.png",
+          title: "Doppler effect on resonance escape probability and reactivity",
+          note: "As fuel temperature rises, U-238 resonances broaden, resonance escape probability drops, and negative reactivity is inserted."
+        },
+        {
+          id: "doppler-broadening",
+          topic: "doppler",
+          src: "assets/course-images/reactivity-figure-2.png",
+          title: "Doppler broadening of the U-238 capture cross section",
+          note: "The peak height decreases but the resonance covers a wider energy range, increasing absorption probability."
+        },
+        {
+          id: "one-group-roots",
+          topic: "eigenvalue-method",
+          src: "assets/course-images/point-kinetics-figure-1.png",
+          title: "One-group inhour roots and reactivity regimes",
+          note: "The larger root controls the reactor period; the smaller negative root dies out on the prompt timescale."
+        },
+        {
+          id: "prompt-jump-drop",
+          topic: "prompt-jump",
+          src: "assets/course-images/point-kinetics-figure-2.png",
+          title: "Prompt jump and prompt drop behavior",
+          note: "A positive step gives an immediate jump; a negative step gives a prompt drop, followed by delayed-neutron controlled motion."
+        },
+        {
+          id: "six-group-inhour",
+          topic: "six-group",
+          src: "assets/course-images/point-kinetics-figure-3.png",
+          title: "Six-group inhour equation",
+          note: "The physical root and the interlaced negative roots explain why six-group kinetics is more accurate near larger reactivity changes."
+        }
+      ]
+    };
+
+    const TEXT = {
+      en: {
+        brandSub: "Exam revision, 9 June 2026",
+        student: "Student name",
+        path: "Study path",
+        assigned: "Assigned focus",
+        pageTitle: "NE-411 Study Hub",
+        pageSubtitle: "A practical offline revision tool built from the uploaded lecture notes on reactivity, control, feedback coefficients, and point kinetics.",
+        simple: "What this means in simple words",
+        definitions: "Definitions",
+        formulas: "Formulas",
+        notes: "Core notes",
+        mistakes: "Common mistakes",
+        examples: "Examples",
+        markDone: "Mark done",
+        done: "Done",
+        overview: "Overview",
+        detailed: "Detailed Notes",
+        formulaSheet: "Formula Sheet",
+        flashcards: "Flashcards",
+        mcq: "MCQ Quiz",
+        short: "Short Answers",
+        practice: "Practice Problems",
+        cheat: "Final Cheat Sheet",
+        checklist: "Exam Checklist",
+        searchPlaceholder: "Search topics, formulas, questions...",
+        allModules: "All modules",
+        allDifficulty: "All difficulty",
+        daysLeft: "days left",
+        topicsDone: "topics done",
+        cardsMastered: "cards mastered",
+        bestQuiz: "best quiz",
+        reset: "Reset progress",
+        reveal: "Reveal answer",
+        hide: "Hide answer",
+        next: "Next",
+        prev: "Previous",
+        flip: "Flip",
+        mastered: "Mastered",
+        notMastered: "Needs review",
+        score: "Score",
+        calculator: "Kinetics calculator",
+        calculate: "Calculate",
+        noResults: "No matching content. Try a broader search.",
+        uploadTitle: "Upload coverage",
+        pathHint: "Highlighted topics match the selected study path."
+      },
+      ar: {
+        brandSub: "مراجعة الاختبار، 9 يونيو 2026",
+        student: "اسم الطالب",
+        path: "مسار المذاكرة",
+        assigned: "موضوعاتك المركزة",
+        pageTitle: "مركز مذاكرة NE-411",
+        pageSubtitle: "أداة مراجعة عملية مبنية من ملاحظات المحاضرات المرفوعة عن التفاعلية والتحكم ومعاملات التغذية الراجعة وحركية النقطة.",
+        simple: "بكلمات بسيطة",
+        definitions: "تعريفات",
+        formulas: "معادلات",
+        notes: "النقاط الأساسية",
+        mistakes: "أخطاء شائعة",
+        examples: "أمثلة",
+        markDone: "علّم كمكتمل",
+        done: "مكتمل",
+        overview: "نظرة عامة",
+        detailed: "ملاحظات تفصيلية",
+        formulaSheet: "ورقة المعادلات",
+        flashcards: "بطاقات",
+        mcq: "اختبار اختياري",
+        short: "أسئلة قصيرة",
+        practice: "مسائل تدريب",
+        cheat: "ملخص نهائي",
+        checklist: "قائمة الجاهزية",
+        searchPlaceholder: "ابحث في الموضوعات والمعادلات والأسئلة...",
+        allModules: "كل الوحدات",
+        allDifficulty: "كل المستويات",
+        daysLeft: "أيام متبقية",
+        topicsDone: "موضوعات مكتملة",
+        cardsMastered: "بطاقات متقنة",
+        bestQuiz: "أفضل نتيجة",
+        reset: "إعادة ضبط التقدم",
+        reveal: "إظهار الإجابة",
+        hide: "إخفاء الإجابة",
+        next: "التالي",
+        prev: "السابق",
+        flip: "اقلب البطاقة",
+        mastered: "متقن",
+        notMastered: "يحتاج مراجعة",
+        score: "النتيجة",
+        calculator: "حاسبة الحركية",
+        calculate: "احسب",
+        noResults: "لا توجد نتائج مطابقة. جرّب بحثا أوسع.",
+        uploadTitle: "تغطية الملفات",
+        pathHint: "الموضوعات المحددة تناسب مسار المذاكرة المختار."
+      }
+    };
+
+    const MODES = [
+      ["overview", "overview", "M3 12h18M12 3v18M5 5l14 14M19 5 5 19"],
+      ["detailed", "detailed", "M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"],
+      ["formula", "formulaSheet", "M4 7h16M7 4l10 17M6 17c2-4 5-8 8-8 2 0 3 2 1 4l-1 2c-1 2 0 3 2 3 2 0 3-2 4-4"],
+      ["flashcards", "flashcards", "M6 5h13v12H6zM3 8h3v11h12v2H3z"],
+      ["quiz", "mcq", "M12 3a9 9 0 1 0 9 9M12 7v5l3 2"],
+      ["short", "short", "M4 5h16M4 10h16M4 15h10M4 20h8"],
+      ["practice", "practice", "M6 4h12v16H6zM9 8h6M9 12h6M9 16h3"],
+      ["cheat", "cheat", "M5 4h14v18l-7-4-7 4zM8 8h8M8 12h8"],
+      ["checklist", "checklist", "M4 6h12M4 12h12M4 18h12M18 5l2 2 3-4M18 11l2 2 3-4M18 17l2 2 3-4"]
+    ];
+
+    const PATHS = {
+      quick: {
+        name: "Quick review",
+        nameAr: "مراجعة سريعة",
+        topicIds: ["reactivity-basics", "reactivity-units", "coefficients-overview", "doppler", "mtc", "void", "pke-equations", "prompt-jump", "worked-examples"],
+        eta: "2-3 hours",
+        aim: "Definitions, formulas, and highest-yield traps.",
+        note: "Best when you need the highest-yield ideas first."
+      },
+      full: {
+        name: "Full revision",
+        nameAr: "مراجعة كاملة",
+        topicIds: [],
+        eta: "12-16 hours",
+        aim: "Every topic, table, figure, quiz, and calculation set.",
+        note: "Covers every extracted topic and all practice modes."
+      },
+      rescue: {
+        name: "Weak-topic rescue",
+        nameAr: "إنقاذ الموضوعات الضعيفة",
+        topicIds: ["reactivity-units", "small-reactivity", "control-rods", "chemical-shim", "eigenvalue-method", "analytical-solution", "six-group"],
+        eta: "4-6 hours",
+        aim: "Unit conversions, derivations, and hard calculations.",
+        note: "Targets formulas, units, derivations, and comparison traps."
+      },
+      cram: {
+        name: "Final-night cram",
+        nameAr: "ليلة الاختبار",
+        topicIds: ["reactivity-basics", "reactivity-units", "doppler", "mtc", "void", "pke-equations", "eigenvalue-method", "prompt-jump", "worked-examples"],
+        eta: "90-120 min",
+        aim: "Cheat sheet, MCQs, and must-know numbers.",
+        note: "Definitions, formulas, common mistakes, then quizzes."
+      }
+    };
+
+    const TOPICS = [
+      {
+        id: "reactivity-basics",
+        module: "Reactivity, Control, Feedback",
+        title: "Reactivity and Criticality",
+        titleAr: "التفاعلية والحالة الحرجة",
+        difficulty: "Core",
+        time: "18 min",
+        source: "Reactivity notes sections 1",
+        tags: ["rho", "keff", "critical"],
+        simple: "Reactivity is the reactor's distance from exactly balanced neutron production. Zero means steady power; positive means power tends to rise; negative means power tends to fall.",
+        simpleAr: "التفاعلية هي مدى ابتعاد المفاعل عن الاتزان. صفر يعني قدرة ثابتة، الموجب يعني زيادة القدرة، والسالب يعني انخفاض القدرة.",
+        definitions: [
+          "Critical reactor: neutron population is sustained at a constant level; each generation produces one effective next generation.",
+          "Supercritical reactor: neutron population increases, so power rises.",
+          "Subcritical reactor: neutron population decreases, so power falls.",
+          "Effective multiplication factor k_eff: ratio of neutrons in one generation to the preceding generation, including losses and leakage."
+        ],
+        formulas: [
+          "ρ = (k_eff - 1) / k_eff = Δk/k",
+          "k_eff = 1 -> ρ = 0; k_eff > 1 -> ρ > 0; k_eff < 1 -> ρ < 0"
+        ],
+        notes: [
+          "Reactivity is dimensionless, but operators usually express it in practical small units such as pcm, dollars, or cents.",
+          "A reactor can be slightly supercritical and still controllable if ρ is below β_eff, because delayed neutrons still dominate the response.",
+          "Prompt criticality occurs at ρ = β_eff, where prompt neutrons alone can sustain the chain reaction."
+        ],
+        mistakes: [
+          "Using ρ = k_eff - 1 without the denominator. For small changes it is close, but the formal definition is (k_eff - 1)/k_eff.",
+          "Calling every positive reactivity state dangerous. Positive but sub-dollar reactivity is delayed-supercritical and mechanically controllable."
+        ],
+        examples: [
+          "If k_eff = 1.005, then ρ = 0.005/1.005 = 0.004975."
+        ]
+      },
+      {
+        id: "reactivity-units",
+        module: "Reactivity, Control, Feedback",
+        title: "Units of Reactivity",
+        titleAr: "وحدات التفاعلية",
+        difficulty: "Core",
+        time: "22 min",
+        source: "Reactivity notes sections 2",
+        tags: ["pcm", "dollar", "cent", "beta"],
+        simple: "The same small reactivity can be written several ways. pcm is convenient for operation; dollars tell you how close you are to prompt critical.",
+        simpleAr: "يمكن كتابة نفس التفاعلية الصغيرة بعدة وحدات. pcm مفيدة للتشغيل، والدولار يوضح القرب من الحالة الحرجة الفورية.",
+        definitions: [
+          "pcm: per cent mille, equal to 10^-5 Δk/k.",
+          "Dollar: reactivity normalized to β_eff; 1 dollar means ρ = β_eff.",
+          "Cent: one hundredth of a dollar.",
+          "β_eff: effective delayed neutron fraction, about 0.0065 for U-235 fueled reactors near beginning of life."
+        ],
+        formulas: [
+          "ρ(pcm) = ρ × 10^5",
+          "ρ($) = ρ / β_eff",
+          "ρ(cent) = 100 × ρ($)",
+          "For β_eff = 0.0065: 1$ = 650 pcm and 1 cent = 6.5 pcm"
+        ],
+        notes: [
+          "A typical PWR may have roughly 10,000-20,000 pcm of excess reactivity at beginning of cycle.",
+          "The dollar unit changes with β_eff. Since β_eff decreases with burnup, pcm is often preferred in power-reactor operations.",
+          "If ρ reaches 1$, the reactor is prompt critical."
+        ],
+        mistakes: [
+          "Forgetting that cents are based on β_eff, not on 100 pcm.",
+          "Treating β_eff as a universal constant. It depends on fuel composition and burnup."
+        ],
+        examples: [
+          "k_eff = 1.00350 gives ρ = 0.003488, or 348.8 pcm. With β_eff = 0.0065, that is 0.537$ = 53.7 cents, below prompt critical."
+        ]
+      },
+      {
+        id: "small-reactivity",
+        module: "Reactivity, Control, Feedback",
+        title: "Small Reactivity, Period, and Inhour",
+        titleAr: "التفاعلية الصغيرة وفترة المفاعل",
+        difficulty: "Medium",
+        time: "24 min",
+        source: "Reactivity notes sections 3",
+        tags: ["period", "inhour", "delayed critical"],
+        simple: "When ρ is much less than β_eff, delayed neutrons slow the power change enough for control systems and operators to respond.",
+        simpleAr: "عندما تكون ρ أصغر بكثير من β_eff فإن النيوترونات المتأخرة تجعل تغير القدرة بطيئا وقابلا للتحكم.",
+        definitions: [
+          "Reactor period T: time for reactor power to change by a factor of e.",
+          "Delayed supercritical: 0 < ρ < β_eff; power rises but delayed neutrons control the timescale.",
+          "Inhour equation: relation between reactivity and reactor period."
+        ],
+        formulas: [
+          "T ≈ β_eff / (λ_eff ρ) for small ρ << β_eff",
+          "ρ = l/T + Σ_i [ β_i / (1 + λ_i T) ]",
+          "1 inhour is the reactivity that produces a period of exactly one hour."
+        ],
+        notes: [
+          "For small positive reactivity, the period is seconds to minutes rather than microseconds.",
+          "Prompt critical and prompt supercritical regions are not controllable by normal mechanical systems.",
+          "Safety margins are designed to keep normal and accident conditions away from the prompt critical boundary."
+        ],
+        mistakes: [
+          "Using the small-reactivity approximation close to ρ = β_eff.",
+          "Confusing reactor period with half-life. Period is e-folding time; doubling time is T ln 2."
+        ],
+        examples: [
+          "For ρ = 0.001, β_eff = 0.0065, and λ_eff around 0.08 s^-1, the reactor response is slow enough to be manageable."
+        ]
+      },
+      {
+        id: "control-rods",
+        module: "Reactivity, Control, Feedback",
+        title: "Control Rod Worth, Shadowing, and SDM",
+        titleAr: "قيمة قضبان التحكم والتظليل وهامش الإيقاف",
+        difficulty: "Medium",
+        time: "28 min",
+        source: "Reactivity notes sections 4",
+        tags: ["DRW", "IRW", "SCRAM", "shutdown margin"],
+        simple: "Control rods remove neutrons. Their worth depends strongly on where they are in the flux shape and whether nearby rods have already depressed the flux.",
+        simpleAr: "قضبان التحكم تمتص النيوترونات. قيمتها تعتمد على موقعها في توزيع الفيض وعلى وجود قضبان أخرى قريبة تقلل الفيض.",
+        definitions: [
+          "Differential rod worth: dρ/dx, the reactivity change per unit rod movement, often pcm/cm or pcm/step.",
+          "Integral rod worth: total reactivity change from integrating differential worth over rod travel.",
+          "Rod shadowing: reduction in one rod's worth due to neighboring inserted rods depressing local flux.",
+          "Shutdown margin: negative reactivity available with the most reactive rod stuck out."
+        ],
+        formulas: [
+          "DRW = dρ/dx",
+          "IRW(x) = ∫_0^x (dρ/dx') dx'",
+          "Δρ_group < Σ Δρ_individual",
+          "SDM = Total rod worth - Stuck rod worth - Other positive reactivity sources"
+        ],
+        notes: [
+          "Regulating rods make fine power changes; shim rods make larger changes; safety rods insert quickly during SCRAM, often within 1-3 seconds.",
+          "Rod worth is usually highest near the core midplane because flux is highest there.",
+          "Differential worth has a roughly sinusoidal shape; integral worth is S-shaped.",
+          "Common absorber materials include B-10, cadmium, hafnium, Ag-In-Cd, and gadolinium."
+        ],
+        mistakes: [
+          "Adding individual rod worths directly when rods are close together. Shadowing makes group worth smaller.",
+          "Forgetting the stuck-rod assumption in shutdown margin."
+        ],
+        examples: [
+          "If DRW(x) = DRW_max sin(πx/H), then total worth from 0 to H is 2H DRW_max / π."
+        ]
+      },
+      {
+        id: "chemical-shim",
+        module: "Reactivity, Control, Feedback",
+        title: "Chemical Shim and Boron Worth",
+        titleAr: "التحكم الكيميائي وقيمة البورون",
+        difficulty: "Medium",
+        time: "20 min",
+        source: "Reactivity notes sections 5",
+        tags: ["boron", "PWR", "MTC", "burnup"],
+        simple: "Boron dissolved in PWR coolant is a slow, uniform neutron absorber used to compensate long-term excess reactivity without distorting flux like rods.",
+        simpleAr: "البورون المذاب في مبرد PWR يمتص النيوترونات ببطء وبشكل متجانس لتعويض التفاعلية الزائدة طويلة المدى.",
+        definitions: [
+          "Chemical shim: soluble absorber dissolved in coolant/moderator for long-term reactivity control.",
+          "Boric acid H3BO3: standard PWR chemical shim.",
+          "ppm boron: 1 mg of boron per kg of water."
+        ],
+        formulas: [
+          "Δρ_B = α_B ΔB",
+          "Typical boron coefficient: about -5 to -10 pcm/ppm"
+        ],
+        notes: [
+          "Beginning of cycle boron concentration in PWRs is often about 1000-1900 ppm.",
+          "End of cycle boron can be near zero, often about 0-10 ppm.",
+          "High boron makes MTC less negative because hot moderator expands and carries some absorber out of the active core region.",
+          "Chemical shim is precise and spatially uniform but too slow for emergency shutdown."
+        ],
+        mistakes: [
+          "Using boron as if it were SCRAM protection. Emergency shutdown is a control-rod function.",
+          "Forgetting that boron affects MTC sign and magnitude, especially at BOC."
+        ],
+        examples: [
+          "If α_B = -8 pcm/ppm and 4000 pcm of burnup reactivity is lost, the boron concentration must be reduced by 500 ppm to keep criticality."
+        ]
+      },
+      {
+        id: "coefficients-overview",
+        module: "Reactivity, Control, Feedback",
+        title: "Reactivity Coefficients Overview",
+        titleAr: "نظرة عامة على معاملات التفاعلية",
+        difficulty: "Core",
+        time: "18 min",
+        source: "Reactivity notes sections 6 and 10",
+        tags: ["feedback", "alpha", "safety"],
+        simple: "A reactivity coefficient tells you how the reactor naturally reacts when temperature, void fraction, boron, or power changes.",
+        simpleAr: "معامل التفاعلية يخبرك كيف يتفاعل المفاعل طبيعيا عند تغير الحرارة أو الفراغات أو البورون أو القدرة.",
+        definitions: [
+          "Reactivity coefficient: partial derivative of reactivity with respect to a physical parameter.",
+          "Negative coefficient: self-regulating feedback that reduces reactivity when the parameter rises.",
+          "Positive coefficient: feedback that can amplify a transient if not controlled."
+        ],
+        formulas: [
+          "α_X = ∂ρ/∂X",
+          "Overall power coefficient = sum of feedback contributions as power changes"
+        ],
+        notes: [
+          "Negative coefficients are central to passive safety.",
+          "Fuel Doppler feedback is prompt and always negative in LEU commercial reactors.",
+          "MTC must be non-positive at significant power in LWR licensing.",
+          "The RBMK positive void coefficient contributed to the 1986 Chernobyl accident."
+        ],
+        mistakes: [
+          "Thinking a more negative coefficient is always better. Too negative MTC can create large positive insertion during rapid cooldown.",
+          "Ignoring timescale: Doppler is milliseconds to seconds, while boron dilution is minutes."
+        ],
+        examples: [
+          "A power increase heats fuel and moderator; if α_f and α_M are negative, the feedback inserts negative reactivity and resists the increase."
+        ]
+      },
+      {
+        id: "doppler",
+        module: "Reactivity, Control, Feedback",
+        title: "Fuel Temperature Coefficient and Doppler Defect",
+        titleAr: "معامل حرارة الوقود وعيب دوبلر",
+        difficulty: "Core",
+        time: "28 min",
+        source: "Reactivity notes sections 7 plus figures",
+        tags: ["DTC", "FTC", "U-238", "Doppler"],
+        simple: "Hot U-238 absorbs more resonance neutrons because its absorption peaks broaden. That lowers resonance escape probability and inserts negative reactivity almost immediately.",
+        simpleAr: "عند ارتفاع حرارة U-238 تتسع قمم الامتصاص الرنيني، فينخفض احتمال هروب النيوترونات وتدخل تفاعلية سالبة بسرعة.",
+        definitions: [
+          "Fuel temperature coefficient (FTC/DTC): change in reactivity per degree change in fuel temperature.",
+          "Doppler broadening: thermal motion broadens resonance absorption peaks.",
+          "Doppler defect: total reactivity change from cold fuel to hot full-power fuel."
+        ],
+        formulas: [
+          "α_f = dρ/dT_f",
+          "k_eff = η ε p f P",
+          "Δρ_Doppler = α_f ΔT_f",
+          "Typical PWR BOC α_f ≈ -2 to -5 pcm/°C; EOC ≈ -1.5 to -3 pcm/°C"
+        ],
+        notes: [
+          "The effect is the fastest major safety feedback because it follows fuel temperature on a prompt thermal timescale.",
+          "LEU commercial reactors have strongly negative Doppler coefficients because fuel contains abundant U-238.",
+          "As burnup increases, the coefficient can become less negative because U-238 is consumed and plutonium builds up.",
+          "Doppler feedback helps stop reactivity-initiated accidents before mechanical rods respond."
+        ],
+        mistakes: [
+          "Saying resonance peak area disappears. The peak spreads and height drops; the wider energy coverage increases effective absorption.",
+          "Forgetting unit consistency when ΔT is in K or °C. A temperature difference has the same numerical size in K and °C."
+        ],
+        examples: [
+          "If α_f = -3 pcm/°C and fuel rises from 300 K to 900 K, Δρ = -3 × 600 = -1800 pcm ≈ -2.77$ for β_eff = 0.0065."
+        ],
+        figures: ["doppler-reactivity", "doppler-broadening"]
+      },
+      {
+        id: "mtc",
+        module: "Reactivity, Control, Feedback",
+        title: "Moderator Temperature Coefficient",
+        titleAr: "معامل حرارة المهدئ",
+        difficulty: "Core",
+        time: "26 min",
+        source: "Reactivity notes sections 8",
+        tags: ["MTC", "moderation", "boron", "PWR"],
+        simple: "Heating water lowers its density. In under-moderated LWR cores that reduces moderation and usually inserts negative reactivity.",
+        simpleAr: "ارتفاع حرارة الماء يقلل كثافته. في مفاعلات LWR غير المهدأة زيادة، هذا يقلل التهدئة ويدخل غالبا تفاعلية سالبة.",
+        definitions: [
+          "MTC: change in reactivity per unit change in moderator temperature.",
+          "Under-moderated: reactor has less moderator than the optimum ratio, so removing moderator reduces reactivity.",
+          "Over-moderated: reactor has more moderator than optimum, so removing moderator may increase reactivity."
+        ],
+        formulas: [
+          "α_M = dρ/dT_M",
+          "Δρ_mod = α_M ΔT_M",
+          "Typical PWR MTC ranges: BOC -5 to -20 pcm/°C; MOC -20 to -50 pcm/°C; EOC -50 to -80 pcm/°C"
+        ],
+        notes: [
+          "MTC combines moderator density, neutron spectrum shift, and boron effects.",
+          "All commercial LWRs are deliberately under-moderated.",
+          "At high boron concentration, thermal expansion removes some absorber and offsets the negative density effect.",
+          "NRC guidance requires MTC to be non-positive at significant power across the fuel cycle."
+        ],
+        mistakes: [
+          "Assuming MTC is always the same over a fuel cycle. It becomes more negative as boron is diluted.",
+          "Forgetting cooldown transients: if MTC is negative, decreasing moderator temperature inserts positive reactivity."
+        ],
+        examples: [
+          "If MTC = -30 pcm/°C and moderator heats from 20°C to 300°C, Δρ_mod = -30 × 280 = -8400 pcm ≈ -12.9$."
+        ]
+      },
+      {
+        id: "void",
+        module: "Reactivity, Control, Feedback",
+        title: "Void Coefficient",
+        titleAr: "معامل الفراغات",
+        difficulty: "Core",
+        time: "24 min",
+        source: "Reactivity notes sections 9",
+        tags: ["void", "BWR", "PWR", "RBMK"],
+        simple: "Voids replace liquid water with steam. Usually that removes moderation and increases leakage, so LWR reactivity goes negative; RBMK is the famous unsafe exception.",
+        simpleAr: "الفراغات تستبدل الماء السائل بالبخار. غالبا هذا يقلل التهدئة ويزيد التسرب فتكون التفاعلية سالبة في LWR، و RBMK هو الاستثناء الخطير.",
+        definitions: [
+          "Void coefficient: reactivity change per unit change in coolant/moderator void fraction.",
+          "Void fraction α_v: fraction of coolant volume that is steam or gas.",
+          "CPR: critical power ratio, a BWR safety metric related to avoiding dryout."
+        ],
+        formulas: [
+          "α_void = dρ/dα_v",
+          "Typical PWR: -150 to -300 pcm/% void",
+          "Typical BWR: -40 to -150 pcm/% void",
+          "RBMK: +2 to +5 pcm/% void"
+        ],
+        notes: [
+          "Loss of moderation gives negative reactivity; loss of absorption gives positive reactivity; increased leakage gives negative reactivity.",
+          "In BWRs, void coefficient is also a normal power-control mechanism.",
+          "Increasing recirculation flow reduces voids and can increase power; reducing flow increases voids and reduces power.",
+          "PWRs normally have subcooled liquid coolant, but void feedback matters under accident conditions such as LOCA.",
+          "BWR CPR safety limit in the notes is 1.9."
+        ],
+        mistakes: [
+          "Assuming every water-cooled reactor has the same void coefficient. Moderator/coolant arrangement matters.",
+          "Ignoring the absorption-loss positive term. The net sign depends on which effect dominates."
+        ],
+        examples: [
+          "A BWR void increase from 50% to 70% with α_void = -100 pcm/% void inserts -2000 pcm."
+        ]
+      },
+      {
+        id: "pke-intro",
+        module: "Point Kinetics",
+        title: "Delayed Neutrons and One-Group Approximation",
+        titleAr: "النيوترونات المتأخرة وتقريب المجموعة الواحدة",
+        difficulty: "Core",
+        time: "20 min",
+        source: "Point kinetics notes introduction",
+        tags: ["delayed neutrons", "one group", "lambda"],
+        simple: "Point kinetics tracks total neutron population and precursor concentration over time. Delayed neutrons are few, but they slow the reactor response enough to control.",
+        simpleAr: "حركية النقطة تتابع عدد النيوترونات وتركيز السلائف مع الزمن. النيوترونات المتأخرة قليلة لكنها تجعل الاستجابة قابلة للتحكم.",
+        definitions: [
+          "Point kinetics equations: time-dependent neutron balance equations for neutron population and delayed neutron precursors.",
+          "Delayed neutron precursor: fission product that decays and emits a delayed neutron.",
+          "One-group approximation: replaces six delayed neutron groups with one effective group."
+        ],
+        formulas: [
+          "λ_bar = Σ(β_i λ_i) / β",
+          "β = Σ β_i",
+          "For U-235: β = 0.006502, λ_bar = 0.0767 s^-1, 1/λ_bar = 13.04 s"
+        ],
+        notes: [
+          "Prompt neutrons are emitted around 10^-14 s after fission.",
+          "Delayed neutrons arrive over about 0.01 to 10 s, which creates controllable reactor periods.",
+          "The full six-group model is a 7×7 system; one-group reduces it to two coupled ODEs."
+        ],
+        mistakes: [
+          "Thinking delayed neutrons are important because they are many. They are important because of their timing.",
+          "Using one-group results for high-precision accident analysis without checking six-group accuracy."
+        ],
+        examples: [
+          "The notes report one-group accuracy better than 5% for |ρ| < 2000 pcm in many operational transient estimates."
+        ]
+      },
+      {
+        id: "one-group-parameters",
+        module: "Point Kinetics",
+        title: "U-235 Delayed-Neutron Data",
+        titleAr: "بيانات النيوترونات المتأخرة لليورانيوم-235",
+        difficulty: "Medium",
+        time: "16 min",
+        source: "Point kinetics parameter tables",
+        tags: ["U-235", "beta_i", "lambda_i"],
+        simple: "The six delayed groups have different decay constants and yields. The one-group λ is a β-weighted average.",
+        simpleAr: "المجموعات الست لها ثوابت اضمحلال ونسب مختلفة. ثابت المجموعة الواحدة هو متوسط موزون بقيم β.",
+        definitions: [
+          "λ_i: delayed neutron precursor decay constant for group i.",
+          "β_i: delayed neutron fraction contributed by group i.",
+          "Half-life T_1/2: time for a precursor population to halve."
+        ],
+        formulas: [
+          "λ_bar = Σ(β_i λ_i) / β = 0.0767 s^-1",
+          "Mean delayed neutron lifetime = 1/λ_bar = 13.04 s",
+          "Prompt generation time Λ ≈ 5×10^-5 s for an LWR"
+        ],
+        notes: [
+          "Group 4 has the largest β_i contribution in the table: 0.002568.",
+          "Fast groups have larger λ_i and shorter half-lives.",
+          "The total U-235 delayed neutron fraction listed is β = 0.006502."
+        ],
+        mistakes: [
+          "Averaging λ_i arithmetically instead of weighting by β_i.",
+          "Mixing Λ, the prompt neutron generation time, with λ, the precursor decay constant."
+        ],
+        examples: [
+          "Group 1 has λ_1 = 0.01240 s^-1 and T_1/2 = 55.9 s; group 6 has λ_6 = 3.010 s^-1 and T_1/2 = 0.230 s."
+        ]
+      },
+      {
+        id: "pke-equations",
+        module: "Point Kinetics",
+        title: "One-Group Point Kinetics Equations",
+        titleAr: "معادلات حركية النقطة لمجموعة واحدة",
+        difficulty: "Core",
+        time: "26 min",
+        source: "Point kinetics equations section",
+        tags: ["PKE", "ODE", "precursor"],
+        simple: "The neutron equation balances prompt production/loss with delayed source. The precursor equation balances precursor birth from fission with precursor decay.",
+        simpleAr: "معادلة النيوترونات توازن الإنتاج/الفقد الفوري مع مصدر النيوترونات المتأخرة، ومعادلة السلائف توازن إنتاجها واضمحلالها.",
+        definitions: [
+          "n(t): neutron density or normalized power.",
+          "C(t): one-group precursor concentration.",
+          "ρ: step or time-dependent reactivity.",
+          "Λ: prompt neutron generation time.",
+          "λ: effective precursor decay constant."
+        ],
+        formulas: [
+          "dn/dt = [(ρ - β)/Λ] n + λ C",
+          "dC/dt = [β/Λ] n - λ C",
+          "C_0 = β n_0 / (λ Λ) at steady state"
+        ],
+        notes: [
+          "[(ρ-β)/Λ] n is net prompt neutron production. If ρ < β, prompt neutrons alone cannot sustain the reactor.",
+          "λC is the delayed neutron source from precursor decay.",
+          "[β/Λ] n is precursor production proportional to fission rate.",
+          "-λC is precursor loss by decay."
+        ],
+        mistakes: [
+          "Forgetting the delayed source term λC in the neutron equation.",
+          "Using β/λΛ without multiplying by n_0 when computing steady-state C_0."
+        ],
+        examples: [
+          "At initial critical steady state, dC/dt = 0, so βn_0/Λ = λC_0."
+        ]
+      },
+      {
+        id: "eigenvalue-method",
+        module: "Point Kinetics",
+        title: "Matrix and Eigenvalue Method",
+        titleAr: "طريقة المصفوفة والقيم الذاتية",
+        difficulty: "Hard",
+        time: "34 min",
+        source: "Point kinetics analytical solution sections",
+        tags: ["eigenvalue", "inhour", "omega"],
+        simple: "Assume n and C behave like exponentials. The allowed exponential rates are the eigenvalues, and the largest one sets the long-term reactor period.",
+        simpleAr: "نفترض أن n و C يتصرفان كأسس. معدلات النمو المسموحة هي القيم الذاتية، وأكبر قيمة تحدد فترة المفاعل طويلة المدى.",
+        definitions: [
+          "ω: growth or decay rate, equal to inverse reactor period for the dominant mode.",
+          "Characteristic equation: determinant condition for non-zero exponential solutions.",
+          "Stable period root: the larger eigenvalue ω_1, which dominates after the prompt transient dies out."
+        ],
+        formulas: [
+          "d/dt [n C]^T = A [n C]^T",
+          "A = [[(ρ-β)/Λ, λ], [β/Λ, -λ]]",
+          "n(t) = n_0 e^(ωt), C(t) = C_0 e^(ωt)",
+          "ω² + [λ + (β-ρ)/Λ]ω - λρ/Λ = 0",
+          "b = λ + (β-ρ)/Λ, c = -λρ/Λ",
+          "ω_1,2 = (-b ± sqrt(b² - 4c)) / 2"
+        ],
+        notes: [
+          "For ρ < β, ω_1 is mainly controlled by λ and gives a slow, controllable response.",
+          "ω_2 is a large negative prompt root, so it decays very quickly.",
+          "The inhour equation is a quadratic for one delayed group."
+        ],
+        mistakes: [
+          "Using the same sign for both roots. The plus sign gives ω_1; the minus sign gives the more negative ω_2.",
+          "Dropping units: ω is in s^-1 when λ and Λ use seconds."
+        ],
+        examples: [
+          "For ρ = 100 pcm, β = 0.006502, λ = 0.0767 s^-1, Λ = 5×10^-5 s, the notes give ω_1 ≈ 0.01365 s^-1 and T ≈ 73.3 s."
+        ],
+        figures: ["one-group-roots"]
+      },
+      {
+        id: "analytical-solution",
+        module: "Point Kinetics",
+        title: "General Analytical Solution",
+        titleAr: "الحل التحليلي العام",
+        difficulty: "Hard",
+        time: "32 min",
+        source: "Point kinetics analytical solution section",
+        tags: ["A1", "A2", "exponential modes"],
+        simple: "The power curve is the sum of a slow delayed-neutron mode and a fast prompt mode. After milliseconds, the fast mode is almost gone.",
+        simpleAr: "منحنى القدرة هو مجموع نمط بطيء بسبب النيوترونات المتأخرة ونمط سريع فوري. بعد مللي ثواني يختفي النمط السريع تقريبا.",
+        definitions: [
+          "A_1 and A_2: mode amplitudes set by initial conditions.",
+          "Initial critical condition: reactor starts at steady power before step reactivity.",
+          "Mode superposition: solution is a sum of exponential eigenmodes."
+        ],
+        formulas: [
+          "n(t) = A_1 e^(ω_1 t) + A_2 e^(ω_2 t)",
+          "C(t) = [β A_1/(Λ(ω_1+λ))] e^(ω_1 t) + [β A_2/(Λ(ω_2+λ))] e^(ω_2 t)",
+          "A_1 + A_2 = n_0",
+          "βA_1/[Λ(ω_1+λ)] + βA_2/[Λ(ω_2+λ)] = C_0"
+        ],
+        notes: [
+          "The analytical solution is exact for the one-group approximation with constant step reactivity.",
+          "The initial condition usually assumes the reactor was critical at power n_0 before insertion.",
+          "The fast prompt mode explains prompt jump/drop; the slow mode sets the later period."
+        ],
+        mistakes: [
+          "Writing both terms with e^(ω_1 t). The second neutron term must be e^(ω_2 t).",
+          "Forgetting that A_1 and A_2 are not arbitrary after initial conditions are imposed."
+        ],
+        examples: [
+          "In the +100 pcm example, A_1 ≈ 1.182 n_0 and A_2 ≈ -0.182 n_0, so n(0) checks to 1.0 n_0."
+        ]
+      },
+      {
+        id: "prompt-jump",
+        module: "Point Kinetics",
+        title: "Prompt Jump, Prompt Drop, and Special Cases",
+        titleAr: "القفزة/الهبوط الفوري والحالات الخاصة",
+        difficulty: "Core",
+        time: "30 min",
+        source: "Point kinetics special cases",
+        tags: ["prompt jump", "period", "critical"],
+        simple: "A step reactivity first changes power almost instantly because precursor concentration cannot change instantly. Then delayed neutrons control the slower trend.",
+        simpleAr: "إدخال تفاعلية خطوة يغير القدرة أولا بسرعة لأن تركيز السلائف لا يتغير لحظيا، ثم تتحكم النيوترونات المتأخرة في المسار الأبطأ.",
+        definitions: [
+          "Prompt jump: immediate power increase after positive step reactivity below β.",
+          "Prompt drop: immediate power decrease after negative step reactivity.",
+          "Prompt critical: ρ = β; response becomes too fast for mechanical control."
+        ],
+        formulas: [
+          "n(0+)/n(0-) = β/(β - ρ) for a step with ρ < β",
+          "T ≈ (β - ρ)/(λρ) for ρ > 0 and ρ << β",
+          "At ρ = 0: ω_1 = 0 and ω_2 = -(λ + β/Λ)"
+        ],
+        notes: [
+          "For positive ρ, the ratio is greater than 1; for negative ρ, it is less than 1.",
+          "At ρ = 0, the critical reactor remains at constant power after transient redistribution.",
+          "At ρ = β, exact kinetics gives a very short period; the notes estimate about 10 ms for typical LWR values.",
+          "The prompt mode dies on approximately Λ/(β-ρ), often milliseconds."
+        ],
+        mistakes: [
+          "Using the prompt jump formula for ρ ≥ β. It is not valid past prompt critical.",
+          "Calling the jump a sustained exponential. It is a fast transient followed by the stable period."
+        ],
+        examples: [
+          "For ρ = +100 pcm, β = 0.006502: jump = 0.006502/(0.006502-0.001) = 1.183, so power jumps about 18.3%."
+        ],
+        figures: ["prompt-jump-drop"]
+      },
+      {
+        id: "worked-examples",
+        module: "Point Kinetics",
+        title: "Worked Numerical Examples",
+        titleAr: "أمثلة عددية محلولة",
+        difficulty: "Medium",
+        time: "30 min",
+        source: "Point kinetics worked examples",
+        tags: ["calculation", "period", "power"],
+        simple: "Most exam calculations are a sequence: convert pcm to ρ, compute b and c, solve roots, pick the stable period, then apply prompt jump or exponential growth/decay.",
+        simpleAr: "معظم مسائل الاختبار تسير كالتالي: تحويل pcm إلى ρ، حساب b و c، حل الجذور، اختيار الفترة المستقرة، ثم استخدام القفزة أو النمو/الاضمحلال الأسي.",
+        definitions: [
+          "Stable period T: 1/ω_1 for positive ρ, or 1/|ω_1| for decay magnitude when ρ is negative.",
+          "Normalized power: n(t)/n_0."
+        ],
+        formulas: [
+          "For +100 pcm: b = 110.117 s^-1, sqrt(discriminant) = 110.144 s^-1",
+          "ω_1 = 0.01365 s^-1 -> T = 73.3 s",
+          "ω_2 = -110.13 s^-1 -> fast decay time about 9.1 ms",
+          "For -500 pcm: ω_1 ≈ -0.065 s^-1 -> half-power time ≈ 10.7 s"
+        ],
+        notes: [
+          "At t = 0, the slow and fast amplitudes should sum to 1 for normalized initial power.",
+          "At t = 0.1 s in the +100 pcm case, the fast term is approximately gone and power is about 1.184.",
+          "At 73.3 s, the +100 pcm case has passed about one period after the prompt jump."
+        ],
+        mistakes: [
+          "Using pcm directly in formulas. Convert pcm to dimensionless ρ by dividing by 100,000.",
+          "Reporting negative period without explaining decay. For negative ρ, use |ω_1| for decay time constants."
+        ],
+        examples: [
+          "For +100 pcm, the notes table gives n(t)/n_0 ≈ 1.337 at 10 s, 1.714 at 30 s, and 10.30 at 150 s."
+        ]
+      },
+      {
+        id: "six-group",
+        module: "Point Kinetics",
+        title: "Six-Group Extension",
+        titleAr: "امتداد المجموعات الست",
+        difficulty: "Hard",
+        time: "22 min",
+        source: "Point kinetics six-group section",
+        tags: ["six group", "inhour", "accuracy"],
+        simple: "The six-group model keeps separate precursor groups, giving seven eigenvalues. It is more accurate, but the one-group model is often close for moderate reactivity.",
+        simpleAr: "نموذج المجموعات الست يحافظ على كل مجموعة سلائف منفصلة فيعطي سبع قيم ذاتية. هو أدق لكن نموذج المجموعة الواحدة قريب غالبا للتفاعليات المتوسطة.",
+        definitions: [
+          "Six-group inhour equation: full delayed neutron model with six precursor groups.",
+          "Physical root ω_0: largest root that determines asymptotic period.",
+          "Interlaced roots: negative roots located between delayed group poles."
+        ],
+        formulas: [
+          "ρ = Λω + Σ_i=1^6 [β_i ω/(ω + λ_i)]",
+          "The six-group system gives seven roots: one physical period root and six negative roots."
+        ],
+        notes: [
+          "ω_0 is positive for ρ > 0 and negative for ρ < 0.",
+          "The other roots are negative and interlaced around -λ_i values.",
+          "The notes compare one-group and six-group periods: error is about 1.5% at +100 pcm and 4.4% at +1000 pcm.",
+          "One-group error grows for larger reactivity, about 9.4% at +5000 pcm in the table."
+        ],
+        mistakes: [
+          "Expecting only two roots in the six-group model. Six groups plus neutron density gives seven equations and seven roots.",
+          "Using one-group approximation without noting its accuracy limits."
+        ],
+        examples: [
+          "For +500 pcm, one-group T = 14.2 s and six-group T = 13.8 s, about 2.9% error."
+        ],
+        figures: ["six-group-inhour"]
+      }
+    ];
+
+    const TABLES = [
+      {
+        title: "Reactivity Units",
+        module: "Reactivity, Control, Feedback",
+        headers: ["Unit", "Symbol", "Definition", "Typical use"],
+        rows: [
+          ["Δk/k", "ρ", "Direct ratio; dimensionless", "Theory and textbook work"],
+          ["%Δk/k", "%ρ", "ρ × 100", "General reporting"],
+          ["pcm", "pcm", "ρ × 10^5", "LWR operations"],
+          ["Dollar", "$", "ρ / β_eff", "Prompt criticality scale"],
+          ["Cent", "¢", "ρ / (100 β_eff)", "Fine rod-worth changes"],
+          ["Inhour", "ih", "Related to reactor period", "Startup and shutdown analysis"]
+        ]
+      },
+      {
+        title: "Control Rod Materials",
+        module: "Reactivity, Control, Feedback",
+        headers: ["Material", "Thermal cross-section", "Reactor type", "Notes"],
+        rows: [
+          ["Boron-10 (B4C)", "3840 b", "PWR, BWR, research", "Common absorber and burnable poison"],
+          ["Cadmium", "2520 b", "Research reactors", "Strong absorber; shorter burnup life"],
+          ["Hafnium", "100 b", "PWR", "Long life and dimensional stability"],
+          ["Ag-In-Cd", "~1000 b effective", "PWR", "Standard alloy rod material"],
+          ["Gadolinium", "49000 b", "Burnable absorber in fuel", "Burns out; not a movable rod"]
+        ]
+      },
+      {
+        title: "Chemical Shim vs Control Rods",
+        module: "Reactivity, Control, Feedback",
+        headers: ["Feature", "Chemical shim", "Control rods"],
+        rows: [
+          ["Speed", "Slow, minutes to hours", "Fast, seconds"],
+          ["Flux effect", "Uniform, little distortion", "Local flux depression"],
+          ["Purpose", "Long-term burnup compensation", "Short-term control and SCRAM"],
+          ["Precision", "ppm-level adjustment", "Discrete steps"],
+          ["Emergency use", "Not for rapid shutdown", "Primary SCRAM mechanism"]
+        ]
+      },
+      {
+        title: "MTC Values in a PWR",
+        module: "Reactivity, Control, Feedback",
+        headers: ["Condition", "MTC value", "Comment"],
+        rows: [
+          ["BOC at power", "-5 to -20 pcm/°C", "High boron offsets negative density effect"],
+          ["MOC at power", "-20 to -50 pcm/°C", "Boron decreases; MTC more negative"],
+          ["EOC at power", "-50 to -80 pcm/°C", "Strongest self-regulation"],
+          ["Cold zero power, high boron", "≤ 0 pcm/°C", "Technical spec limit"]
+        ]
+      },
+      {
+        title: "Void Coefficient by Reactor Type",
+        module: "Reactivity, Control, Feedback",
+        headers: ["Reactor type", "Void coefficient", "Dominant mechanism", "Safety implication"],
+        rows: [
+          ["PWR", "-150 to -300 pcm/% void", "Loss of moderation dominates", "Voids reduce power"],
+          ["BWR", "-40 to -150 pcm/% void", "Moderation loss with some absorption loss", "Key control feedback"],
+          ["RBMK", "+2 to +5 pcm/% void", "Graphite moderator remains; water acts mainly as absorber", "Unsafe positive feedback"],
+          ["CANDU", "Slightly positive or near zero", "D2O moderator separate from coolant", "Controlled by other systems"],
+          ["VVER", "Strongly negative", "Similar to Western PWR", "Inherent safety"]
+        ]
+      },
+      {
+        title: "Reactivity Coefficients",
+        module: "Reactivity, Control, Feedback",
+        headers: ["Coefficient", "Symbol", "Sign in LWR", "Typical PWR range", "Speed", "Cause"],
+        rows: [
+          ["Fuel temperature", "α_f or DTC", "Always negative", "-2 to -5 pcm/°C", "Prompt", "U-238 Doppler broadening"],
+          ["Moderator temperature", "α_M or MTC", "Non-positive", "-5 to -80 pcm/°C", "Seconds", "Water density and spectrum shift"],
+          ["Void", "α_void", "Negative", "-40 to -300 pcm/% void", "Seconds", "Loss of moderation and leakage"],
+          ["Boron", "α_B", "Negative", "-5 to -10 pcm/ppm", "Minutes", "Neutron absorption"],
+          ["Power", "α_P", "Negative", "Combined", "Composite", "Doppler + MTC + void"]
+        ]
+      },
+      {
+        title: "U-235 One-Group Parameters",
+        module: "Point Kinetics",
+        headers: ["Parameter", "Symbol", "Value", "Units"],
+        rows: [
+          ["Total delayed neutron fraction", "β", "0.006502", "-"],
+          ["Effective decay constant", "λ", "0.0767", "s^-1"],
+          ["Mean delayed neutron lifetime", "1/λ", "13.04", "s"],
+          ["Prompt neutron generation time", "Λ", "~5×10^-5", "s for LWR"]
+        ]
+      },
+      {
+        title: "PKE Variables",
+        module: "Point Kinetics",
+        headers: ["Symbol", "Name", "Typical value", "Units"],
+        rows: [
+          ["n(t)", "Neutron density or power", "-", "n/cm^3 or normalized"],
+          ["C(t)", "Precursor concentration", "-", "cm^-3"],
+          ["ρ", "Reactivity", "Variable", "-"],
+          ["β", "Delayed neutron fraction", "0.006502", "-"],
+          ["Λ", "Prompt generation time", "5×10^-5 to 5×10^-4", "s"],
+          ["λ", "Effective decay constant", "0.0767", "s^-1"],
+          ["t", "Time", "-", "s"]
+        ]
+      },
+      {
+        title: "Prompt Jump Values",
+        module: "Point Kinetics",
+        headers: ["Reactivity change", "β - ρ or β + |ρ|", "Prompt jump/drop", "Net change"],
+        rows: [
+          ["+100 pcm", "0.005502", "1.182", "+18.2%"],
+          ["+500 pcm", "0.001502", "4.33", "+333%"],
+          ["+1000 pcm", "0.001", "Too large", "Approaches prompt critical"],
+          ["-100 pcm", "0.007502", "0.867", "-13.3%"],
+          ["-500 pcm", "0.011502", "0.565", "-43.5%"],
+          ["-5000 pcm", "0.056502", "0.115", "-88.5%"]
+        ]
+      },
+      {
+        title: "One-Group vs Six-Group Periods",
+        module: "Point Kinetics",
+        headers: ["Reactivity", "One-group T", "Six-group T", "Error"],
+        rows: [
+          ["+50 pcm", "146.9 s", "145.1 s", "1.2%"],
+          ["+100 pcm", "73.3 s", "72.2 s", "1.5%"],
+          ["+500 pcm", "14.2 s", "13.8 s", "2.9%"],
+          ["+1000 pcm", "6.81 s", "6.52 s", "4.4%"],
+          ["+5000 pcm", "0.70 s", "0.64 s", "9.4%"],
+          ["-100 pcm", "15.4 s", "14.9 s", "3.3%"],
+          ["-1000 pcm", "1.63 s", "1.53 s", "6.5%"]
+        ]
+      }
+    ];
+
+    const FORMULAS = [
+      ["Reactivity", "ρ = (k_eff - 1) / k_eff", "Measures departure from criticality.", "Use k_eff in the denominator."],
+      ["pcm", "ρ(pcm) = ρ × 10^5", "Converts dimensionless reactivity to pcm.", "Convert pcm back by dividing by 100,000."],
+      ["Dollars", "ρ($) = ρ / β_eff", "Shows proximity to prompt critical.", "1$ means ρ = β_eff."],
+      ["Cents", "ρ(¢) = 100ρ / β_eff", "Fine dollar scale.", "One cent is β_eff/100, not 1 pcm."],
+      ["Small period", "T ≈ β_eff / (λ_eff ρ)", "Approximate period for small positive ρ.", "Do not use near prompt critical."],
+      ["Inhour", "ρ = l/T + Σ_i β_i/(1 + λ_i T)", "Relates period to delayed neutron groups.", "T is reactor period."],
+      ["Rod worth", "DRW = dρ/dx", "Differential rod worth.", "Units often pcm/cm or pcm/step."],
+      ["Integral worth", "IRW(x) = ∫_0^x DRW(x') dx'", "Total worth from rod travel.", "Do not confuse with local slope."],
+      ["Shutdown margin", "SDM = Total rod worth - Stuck rod worth - positive sources", "Negative reactivity available with stuck rod.", "Always include the stuck-rod assumption."],
+      ["Coefficient", "α_X = ∂ρ/∂X", "Feedback coefficient for parameter X.", "Sign matters more than raw magnitude."],
+      ["Doppler", "α_f = dρ/dT_f", "Fuel temperature coefficient.", "Always negative in LEU commercial power reactors."],
+      ["Doppler defect", "Δρ_Doppler = α_f ΔT_f", "Total fuel-temperature feedback.", "Use ΔT, not absolute T."],
+      ["MTC", "α_M = dρ/dT_M", "Moderator temperature coefficient.", "Non-positive at significant power in LWRs."],
+      ["Moderator defect", "Δρ_mod = α_M ΔT_M", "Total moderator-temperature feedback.", "Cooldown with negative MTC inserts positive reactivity."],
+      ["Void coefficient", "α_void = dρ/dα_v", "Reactivity per void-fraction change.", "Units may be pcm/% void."],
+      ["One-group PKE", "dn/dt = [(ρ-β)/Λ]n + λC", "Neutron balance.", "λC is delayed source."],
+      ["Precursor PKE", "dC/dt = [β/Λ]n - λC", "Precursor birth and decay.", "β/Λ n is production."],
+      ["Steady C", "C_0 = βn_0/(λΛ)", "Critical steady-state precursor concentration.", "Multiply by n_0."],
+      ["One-group inhour", "ω² + [λ+(β-ρ)/Λ]ω - λρ/Λ = 0", "Quadratic for inverse period roots.", "ρ is dimensionless."],
+      ["Eigenvalues", "ω_1,2 = (-b ± √(b² - 4c))/2", "Roots with b = λ+(β-ρ)/Λ and c = -λρ/Λ.", "ω_1 is the larger root."],
+      ["Approx root", "ω_1 ≈ λρ/(β-ρ)", "Stable period root for ρ << β.", "Breaks down near ρ = β."],
+      ["Prompt root", "ω_2 ≈ -(β-ρ)/Λ", "Fast negative prompt mode.", "Decays in milliseconds."],
+      ["General solution", "n(t) = A_1e^(ω_1t) + A_2e^(ω_2t)", "Power as slow + fast modes.", "Second exponent is ω_2."],
+      ["Prompt jump", "n(0+)/n(0-) = β/(β-ρ)", "Immediate step response for ρ < β.", "Ratio is below 1 for negative ρ."],
+      ["Six-group inhour", "ρ = Λω + Σ_i β_iω/(ω+λ_i)", "Full six-group period relation.", "Gives seven roots."],
+      ["Doubling time", "t_2 = T ln 2 = ln(2)/ω_1", "Time for power to double.", "Use only when ω_1 > 0."],
+      ["Decay to fraction", "t = ln(f)/ω_1", "Time to reach fraction f when ω_1 < 0.", "Both ln(f) and ω_1 are negative."]
+    ].map((x, i) => ({ id: "f" + (i + 1), category: x[0], formula: x[1], meaning: x[2], pitfall: x[3] }));
+
+    const FLASHCARDS = [
+      ["What is reactivity?", "ρ measures how far the reactor is from criticality: ρ = (k_eff - 1)/k_eff."],
+      ["What does ρ = 0 mean?", "Critical: steady neutron population and steady power."],
+      ["What is 1 pcm?", "10^-5 Δk/k, so ρ(pcm) = ρ × 10^5."],
+      ["What is one dollar of reactivity?", "ρ = β_eff. This is the prompt critical boundary."],
+      ["For β_eff = 0.0065, how many pcm is 1$?", "650 pcm."],
+      ["Why do delayed neutrons matter?", "They slow reactor response from prompt timescales to seconds or minutes, making control possible."],
+      ["What is DRW?", "Differential rod worth: dρ/dx, reactivity change per unit rod movement."],
+      ["What is IRW?", "Integral rod worth: total worth accumulated over rod travel."],
+      ["Why is rod worth largest near the middle of the core?", "Neutron flux is usually highest near the core midplane."],
+      ["What is rod shadowing?", "Nearby inserted rods depress local flux, reducing the incremental worth of another rod."],
+      ["What is shutdown margin?", "Available negative reactivity to make the reactor subcritical with the most reactive rod stuck out."],
+      ["Why is chemical shim used in PWRs?", "It uniformly controls long-term excess reactivity from burnup without strong flux distortion."],
+      ["How does high boron affect MTC?", "It makes MTC less negative because moderator expansion removes absorber and adds positive reactivity."],
+      ["What is a reactivity coefficient?", "α_X = ∂ρ/∂X, feedback response to a physical parameter."],
+      ["Why is negative feedback important?", "It passively counters power or temperature increases."],
+      ["What causes Doppler feedback?", "Fuel heating broadens U-238 absorption resonances, increasing neutron absorption."],
+      ["Is the Doppler coefficient positive or negative in LEU LWRs?", "Always negative."],
+      ["What is Doppler defect?", "Total reactivity change caused by heating fuel from cold to hot full-power conditions."],
+      ["What is MTC?", "Moderator temperature coefficient: dρ/dT_M."],
+      ["Why are LWRs under-moderated?", "So moderator heating or voiding reduces moderation and inserts negative reactivity."],
+      ["What is a void coefficient?", "Change in reactivity per change in steam/gas void fraction."],
+      ["What is unsafe about positive void coefficient?", "Void formation increases reactivity, which can amplify boiling and power rise."],
+      ["Write the one-group neutron PKE.", "dn/dt = [(ρ-β)/Λ]n + λC."],
+      ["Write the precursor PKE.", "dC/dt = [β/Λ]n - λC."],
+      ["What is C_0 at critical steady state?", "C_0 = βn_0/(λΛ)."],
+      ["What does ω represent?", "Growth or decay rate; inverse period for the dominant mode."],
+      ["What is the one-group inhour equation?", "ω² + [λ+(β-ρ)/Λ]ω - λρ/Λ = 0."],
+      ["What is the prompt jump formula?", "n(0+)/n(0-) = β/(β-ρ), valid for ρ < β."],
+      ["For +100 pcm and β=0.006502, what is the prompt jump?", "About 1.183, or an 18.3% immediate increase."],
+      ["What is the six-group inhour equation?", "ρ = Λω + Σ β_iω/(ω+λ_i)."]
+    ].map((x, i) => ({ id: "card" + (i + 1), front: x[0], back: x[1], tag: i < 12 ? "Reactivity" : i < 22 ? "Feedback" : "Point kinetics" }));
+
+    const MCQS = [
+      {
+        q: "A reactor has k_eff = 1.00350. What is ρ in pcm?",
+        options: ["350 pcm", "348.8 pcm", "0.00350 pcm", "538 pcm"],
+        answer: 1,
+        why: "ρ = (1.00350 - 1)/1.00350 = 0.003488. Multiply by 10^5 to get 348.8 pcm."
+      },
+      {
+        q: "For β_eff = 0.0065, 650 pcm is equal to:",
+        options: ["1 cent", "10 cents", "1 dollar", "0.1 dollar"],
+        answer: 2,
+        why: "1 dollar is β_eff = 0.0065 = 650 pcm."
+      },
+      {
+        q: "Which regime is delayed supercritical?",
+        options: ["ρ < 0", "ρ = 0", "0 < ρ < β_eff", "ρ > β_eff"],
+        answer: 2,
+        why: "Power rises, but delayed neutrons still control the period."
+      },
+      {
+        q: "Differential rod worth is best described as:",
+        options: ["Total rod worth over full travel", "dρ/dx", "β_eff divided by rod position", "The stuck-rod shutdown margin"],
+        answer: 1,
+        why: "Differential worth is the local reactivity change per unit rod movement."
+      },
+      {
+        q: "Why is group rod worth less than the sum of individual worths?",
+        options: ["Delayed neutrons are removed", "Rod shadowing depresses local flux", "Boron concentration rises", "Fuel temperature decreases"],
+        answer: 1,
+        why: "Inserted rods absorb neutrons and create local flux valleys, reducing neighboring rods' incremental worth."
+      },
+      {
+        q: "Which statement about chemical shim is correct?",
+        options: ["It is the primary SCRAM mechanism", "It is fast enough for emergency shutdown", "It provides uniform long-term reactivity control", "It is used only in BWRs"],
+        answer: 2,
+        why: "Boron chemical shim is a slow, spatially uniform PWR method for burnup compensation."
+      },
+      {
+        q: "What causes the fuel Doppler coefficient to be negative?",
+        options: ["Water density increases", "U-238 resonance absorption broadens", "Control rods shadow each other", "Boron is diluted"],
+        answer: 1,
+        why: "Heating fuel broadens U-238 resonances, increasing absorption and reducing resonance escape probability."
+      },
+      {
+        q: "If α_f = -3.5 pcm/°C and fuel temperature rises 700°C, Δρ is:",
+        options: ["+2450 pcm", "-2450 pcm", "-200 pcm", "+200 pcm"],
+        answer: 1,
+        why: "Δρ = α_f ΔT = -3.5 × 700 = -2450 pcm."
+      },
+      {
+        q: "In an under-moderated LWR, moderator heating usually:",
+        options: ["Adds positive reactivity", "Adds negative reactivity", "Has no reactivity effect", "Makes β_eff zero"],
+        answer: 1,
+        why: "Water density decreases, moderation is reduced, and negative reactivity is inserted."
+      },
+      {
+        q: "At BOC with high boron, MTC tends to be:",
+        options: ["More negative than at EOC", "Less negative than at EOC", "Always positive", "Independent of boron"],
+        answer: 1,
+        why: "Moderator expansion removes some boron absorber, adding positive reactivity and offsetting the negative density effect."
+      },
+      {
+        q: "Which reactor type in the notes is associated with a positive void coefficient?",
+        options: ["PWR", "BWR", "RBMK", "VVER"],
+        answer: 2,
+        why: "RBMK has graphite moderation, so water voiding can remove absorber while moderation remains."
+      },
+      {
+        q: "The one-group PKE neutron equation is:",
+        options: ["dn/dt = [(ρ-β)/Λ]n + λC", "dn/dt = [β/Λ]n - λC", "dn/dt = ρβΛn", "dn/dt = λn + ρC"],
+        answer: 0,
+        why: "The neutron equation contains net prompt production plus delayed source λC."
+      },
+      {
+        q: "At critical steady state, C_0 equals:",
+        options: ["λΛ/(βn_0)", "βn_0/(λΛ)", "βλΛn_0", "0"],
+        answer: 1,
+        why: "Set dC/dt = 0: βn_0/Λ = λC_0."
+      },
+      {
+        q: "In the one-group eigenvalue solution, ω_2 usually represents:",
+        options: ["The stable long-term period", "A fast negative prompt mode", "A boron coefficient", "The void fraction"],
+        answer: 1,
+        why: "ω_2 is more negative and decays quickly, often in milliseconds."
+      },
+      {
+        q: "The one-group inhour equation is:",
+        options: ["ω² + [λ+(β-ρ)/Λ]ω - λρ/Λ = 0", "ρ = β/(β-ρ)", "α_X = ∂ρ/∂X", "k_eff = ηεpfP"],
+        answer: 0,
+        why: "This quadratic comes from det(A - ωI)=0."
+      },
+      {
+        q: "For β = 0.006502 and ρ = +100 pcm, the prompt jump ratio is approximately:",
+        options: ["0.867", "1.000", "1.183", "4.33"],
+        answer: 2,
+        why: "ρ = 0.001, so β/(β-ρ) = 0.006502/0.005502 = 1.183."
+      },
+      {
+        q: "The prompt jump formula should not be used when:",
+        options: ["ρ is negative", "ρ is in pcm", "ρ reaches or exceeds β", "β is known"],
+        answer: 2,
+        why: "At or above prompt critical, the approximation is invalid and the response is extremely fast."
+      },
+      {
+        q: "Six delayed groups plus neutron density produce how many roots?",
+        options: ["2", "6", "7", "12"],
+        answer: 2,
+        why: "The full system has seven coupled equations, so it has seven eigenvalues."
+      },
+      {
+        q: "A BWR void fraction rises by 20 percentage points with α_void = -100 pcm/% void. Δρ is:",
+        options: ["-200 pcm", "-2000 pcm", "+2000 pcm", "-20 pcm"],
+        answer: 1,
+        why: "Δρ = -100 × 20 = -2000 pcm."
+      },
+      {
+        q: "If ω_1 = 0.01365 s^-1, the reactor period is about:",
+        options: ["0.01365 s", "7.33 s", "73.3 s", "136.5 s"],
+        answer: 2,
+        why: "T = 1/ω_1 = 1/0.01365 ≈ 73.3 s."
+      }
+    ].map((q, i) => ({ id: "q" + (i + 1), ...q }));
+
+    const SHORT_ANSWERS = [
+      ["Explain why ρ = β_eff is called prompt critical.", "At ρ = β_eff, prompt neutrons alone can sustain the chain reaction. Delayed neutrons are no longer needed to maintain criticality, so the period becomes extremely short."],
+      ["Why does Doppler broadening insert negative reactivity?", "Fuel heating broadens U-238 resonance absorption peaks. More neutrons are captured over a wider energy range, reducing resonance escape probability and k_eff."],
+      ["Why can a very negative MTC be a concern during cooldown?", "If MTC is negative, decreasing moderator temperature inserts positive reactivity. A large negative MTC can therefore create a large positive insertion during rapid cooldown events."],
+      ["Describe rod shadowing in one sentence.", "An inserted rod depresses local neutron flux, so nearby rods have fewer neutrons to absorb and lower incremental worth."],
+      ["Why does boron make MTC less negative at BOC?", "When hot moderator expands, some dissolved boron leaves the active core region, reducing absorption and adding positive reactivity that offsets the negative moderation-density effect."],
+      ["What are the two terms in the neutron PKE and what do they mean?", "[(ρ-β)/Λ]n is net prompt neutron production/loss; λC is delayed neutron source from precursor decay."],
+      ["What does ω_1 determine after the prompt transient has decayed?", "The stable asymptotic reactor period T = 1/ω_1 for positive reactivity, or the decay time constant for negative reactivity."],
+      ["Why is one-group kinetics useful if six-group kinetics is more accurate?", "It reduces the system to two ODEs and gives closed-form insight; it is often accurate enough for moderate operational reactivity changes."],
+      ["Compare chemical shim and control rods.", "Chemical shim is slow, uniform, and used for long-term burnup compensation; control rods are faster, local, and used for startup, power changes, and SCRAM."],
+      ["Why is a positive void coefficient dangerous?", "Void formation increases reactivity, which can increase power and produce more voids, creating positive feedback."]
+    ].map((x, i) => ({ id: "sa" + (i + 1), prompt: x[0], answer: x[1] }));
+
+    const PRACTICE = [
+      {
+        title: "Reactivity units",
+        problem: "A PWR has k_eff = 1.00350. Calculate ρ in Δk/k, %Δk/k, pcm, dollars, and cents. Use β_eff = 0.0065. Is it prompt critical?",
+        solution: [
+          "ρ = (1.00350 - 1)/1.00350 = 0.003488.",
+          "%Δk/k = 0.3488%.",
+          "pcm = 0.003488 × 100000 = 348.8 pcm.",
+          "dollars = 0.003488/0.0065 = 0.537$; cents = 53.7 cents.",
+          "It is below 1$, so it is not prompt critical."
+        ]
+      },
+      {
+        title: "Sinusoidal rod worth",
+        problem: "DRW(x) = DRW_max sin(πx/H), H = 365 cm, DRW_max = 8 pcm/cm. Find total worth and worth at x = H/2.",
+        solution: [
+          "IRW(x) = ∫0^x 8 sin(πx'/H) dx' = (8H/π)[1 - cos(πx/H)].",
+          "Total worth at H: (8H/π)(1 - cosπ) = 16H/π.",
+          "Total = 16 × 365 / π = 1858.9 pcm.",
+          "At H/2: IRW = (8H/π)(1 - 0) = 929.5 pcm, exactly half of total for this symmetric distribution."
+        ]
+      },
+      {
+        title: "Boron dilution",
+        problem: "At BOC, boron is 1200 ppm and α_B = -8 pcm/ppm. If 4000 pcm of fuel burnup reactivity is lost, what new boron concentration maintains criticality?",
+        solution: [
+          "To compensate a loss of +4000 pcm worth of needed reactivity, remove negative absorber worth by diluting boron.",
+          "ΔB = Δρ/α_B = (+4000 pcm)/(-8 pcm/ppm) = -500 ppm.",
+          "New concentration = 1200 - 500 = 700 ppm.",
+          "Chemical shim controlled 1200 × 8 = 9600 pcm from the starting concentration if diluted to zero."
+        ]
+      },
+      {
+        title: "Doppler feedback",
+        problem: "α_f = -3.5 pcm/°C. Fuel temperature rises from 900°C to 1600°C. Convert feedback to pcm and dollars for β_eff = 0.0065. Would it counter +0.5$ insertion?",
+        solution: [
+          "ΔT = 700°C.",
+          "Δρ = -3.5 × 700 = -2450 pcm.",
+          "1$ = 650 pcm, so feedback = -2450/650 = -3.77$.",
+          "Yes. It is much more negative than +0.5$, so it can more than offset the insertion in this simplified calculation."
+        ]
+      },
+      {
+        title: "MTC cooldown",
+        problem: "MTC = -25 pcm/°C. Moderator temperature drops by 50°C. Find reactivity insertion in pcm and dollars.",
+        solution: [
+          "ΔT_M = -50°C.",
+          "Δρ = α_M ΔT_M = (-25)(-50) = +1250 pcm.",
+          "Dollars = 1250/650 = 1.92$ for β_eff = 0.0065.",
+          "This is why too negative an MTC can be a concern during rapid cooldown."
+        ]
+      },
+      {
+        title: "BWR void transient",
+        problem: "Void fraction rises from 50% to 70%; α_void = -100 pcm/% void. Find Δρ and compare with RBMK α_void = +3 pcm/% void.",
+        solution: [
+          "BWR Δvoid = 20 percentage points.",
+          "BWR Δρ = -100 × 20 = -2000 pcm, which reduces power.",
+          "RBMK Δρ = +3 × 20 = +60 pcm, a positive insertion.",
+          "The BWR response is self-limiting; the RBMK response is positive feedback."
+        ]
+      },
+      {
+        title: "One-group roots",
+        problem: "For ρ = +200 pcm, β = 0.006502, λ = 0.0767 s^-1, Λ = 5×10^-5 s, compute exact roots and stable period.",
+        solution: [
+          "ρ = 200/100000 = 0.002.",
+          "b = λ + (β-ρ)/Λ = 0.0767 + 0.004502/5e-5 = 90.1167 s^-1.",
+          "c = -λρ/Λ = -0.0767×0.002/5e-5 = -3.068.",
+          "discriminant = b² - 4c = 8130.99 + 12.272 = 8143.26; sqrt = 90.239.",
+          "ω_1 = (-90.1167 + 90.239)/2 = 0.0612 s^-1; ω_2 = (-90.1167 - 90.239)/2 = -90.178 s^-1.",
+          "T = 1/ω_1 ≈ 16.3 s."
+        ]
+      },
+      {
+        title: "Reactivity for 20 s period",
+        problem: "Using the one-group rearranged inhour equation, find ρ for T = 20 s using β = 0.006502, λ = 0.0767 s^-1, Λ = 5×10^-5 s.",
+        solution: [
+          "ω = 1/T = 0.05 s^-1.",
+          "ρ = Λω + βω/(ω + λ).",
+          "Λω = 5e-5 × 0.05 = 2.5e-6.",
+          "βω/(ω+λ) = 0.006502×0.05/(0.1267) = 0.002566.",
+          "ρ = 0.0025685 = 256.9 pcm."
+        ]
+      }
+    ].map((x, i) => ({ id: "p" + (i + 1), ...x }));
+
+    const CHECKLIST = [
+      "I can convert k_eff to ρ, pcm, dollars, and cents.",
+      "I can explain critical, delayed supercritical, prompt critical, and prompt supercritical.",
+      "I know typical β_eff ≈ 0.0065 and 1$ ≈ 650 pcm for U-235 examples.",
+      "I can distinguish DRW, IRW, rod shadowing, and shutdown margin.",
+      "I can explain why chemical shim is slow, uniform, and not a SCRAM mechanism.",
+      "I can derive the sign of Doppler, MTC, and void feedback from physical mechanisms.",
+      "I know typical PWR feedback ranges from the notes.",
+      "I can write both one-group PKE equations from memory.",
+      "I can derive the one-group inhour quadratic using the eigenvalue assumption.",
+      "I can compute ω_1, ω_2, reactor period, and prompt jump for a step insertion.",
+      "I can explain prompt jump/drop in words and identify when the formula is invalid.",
+      "I can compare one-group and six-group kinetics and know when the approximation weakens.",
+      "I solved at least five calculation problems without looking at the solution.",
+      "I completed one MCQ pass with explanations, then reviewed every wrong answer."
+    ];
+
+    const state = {
+      mode: localStorage.getItem("ne411.mode") || "overview",
+      theme: localStorage.getItem("ne411.theme") || "dark",
+      lang: localStorage.getItem("ne411.lang") || "en",
+      path: localStorage.getItem("ne411.path") || "quick",
+      name: localStorage.getItem("ne411.name") || "",
+      doneTopics: new Set(JSON.parse(localStorage.getItem("ne411.doneTopics") || "[]")),
+      mastered: new Set(JSON.parse(localStorage.getItem("ne411.mastered") || "[]")),
+      checklist: new Set(JSON.parse(localStorage.getItem("ne411.checklist") || "[]")),
+      quizAnswers: JSON.parse(localStorage.getItem("ne411.quizAnswers") || "{}"),
+      bestQuiz: Number(localStorage.getItem("ne411.bestQuiz") || 0),
+      flashIndex: Number(localStorage.getItem("ne411.flashIndex") || 0),
+      flashBack: false,
+      query: "",
+      moduleFilter: "all",
+      difficultyFilter: "all"
+    };
+
+    const els = {
+      html: document.documentElement,
+      sidebar: document.getElementById("sidebar"),
+      modeNav: document.getElementById("modeNav"),
+      pathSelect: document.getElementById("pathSelect"),
+      studentName: document.getElementById("studentName"),
+      assignedBox: document.getElementById("assignedBox"),
+      content: document.getElementById("content"),
+      stats: document.getElementById("stats"),
+      searchInput: document.getElementById("searchInput"),
+      moduleFilter: document.getElementById("moduleFilter"),
+      difficultyFilter: document.getElementById("difficultyFilter"),
+      pageTitle: document.getElementById("pageTitle"),
+      pageSubtitle: document.getElementById("pageSubtitle"),
+      themeToggle: document.getElementById("themeToggle"),
+      themeLabel: document.getElementById("themeLabel"),
+      langToggle: document.getElementById("langToggle"),
+      langLabel: document.getElementById("langLabel"),
+      printButton: document.getElementById("printButton"),
+      openMenu: document.getElementById("openMenu")
+    };
+
+    const t = key => TEXT[state.lang][key] || TEXT.en[key] || key;
+    const esc = value => String(value ?? "").replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+    const icon = path => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="${path}" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
+    const persistSet = (key, set) => localStorage.setItem(key, JSON.stringify([...set]));
+    const pathTopics = () => state.path === "full" ? TOPICS.map(x => x.id) : PATHS[state.path].topicIds;
+    const percent = (value, total) => total ? Math.max(0, Math.min(100, Math.round((value / total) * 100))) : 0;
+
+    function quizScore() {
+      let correct = 0;
+      MCQS.forEach(q => { if (state.quizAnswers[q.id] === q.answer) correct++; });
+      return correct;
+    }
+
+    function readinessScore() {
+      const topic = percent(state.doneTopics.size, TOPICS.length);
+      const cards = percent(state.mastered.size, FLASHCARDS.length);
+      const checklist = percent(state.checklist.size, CHECKLIST.length);
+      const quiz = percent(Math.max(state.bestQuiz, quizScore()), MCQS.length);
+      return Math.round(topic * .34 + cards * .2 + quiz * .28 + checklist * .18);
+    }
+
+    function nextTopic() {
+      const ids = pathTopics();
+      return ids.map(id => TOPICS.find(topic => topic.id === id)).filter(Boolean).find(topic => !state.doneTopics.has(topic.id)) || TOPICS.find(topic => !state.doneTopics.has(topic.id)) || TOPICS[0];
+    }
+
+    function pathProgress(pathKey) {
+      const ids = pathKey === "full" ? TOPICS.map(topic => topic.id) : PATHS[pathKey].topicIds;
+      const done = ids.filter(id => state.doneTopics.has(id)).length;
+      return { done, total: ids.length || TOPICS.length, pct: percent(done, ids.length || TOPICS.length) };
+    }
+
+    function setMode(mode) {
+      state.mode = mode;
+      localStorage.setItem("ne411.mode", state.mode);
+      els.sidebar.classList.remove("open");
+      render();
+    }
+
+    function moduleOptions() {
+      const modules = ["all", ...new Set(TOPICS.map(x => x.module))];
+      els.moduleFilter.innerHTML = modules.map(m => `<option value="${esc(m)}">${m === "all" ? t("allModules") : esc(m)}</option>`).join("");
+      els.moduleFilter.value = state.moduleFilter;
+      const diffs = ["all", ...new Set(TOPICS.map(x => x.difficulty))];
+      els.difficultyFilter.innerHTML = diffs.map(d => `<option value="${esc(d)}">${d === "all" ? t("allDifficulty") : esc(d)}</option>`).join("");
+      els.difficultyFilter.value = state.difficultyFilter;
+    }
+
+    function setupChrome() {
+      els.html.dataset.theme = state.theme;
+      els.html.lang = state.lang === "ar" ? "ar" : "en";
+      els.html.dir = state.lang === "ar" ? "rtl" : "ltr";
+      document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+      const activeMode = MODES.find(([mode]) => mode === state.mode);
+      els.pageTitle.textContent = state.mode === "overview" ? t("pageTitle") : `${t(activeMode?.[1] || "overview")} · NE-411`;
+      els.pageSubtitle.textContent = state.mode === "overview" ? t("pageSubtitle") : (state.lang === "ar" ? "استخدم هذا الوضع للمراجعة المركزة، ثم ارجع إلى النظرة العامة لتحديث خطة المذاكرة." : "Use this mode for focused revision, then return to Overview to adjust the study plan.");
+      els.themeLabel.textContent = state.theme === "dark" ? "Light" : "Dark";
+      els.langLabel.textContent = state.lang === "en" ? "AR" : "EN";
+      els.searchInput.placeholder = t("searchPlaceholder");
+      els.studentName.value = state.name;
+      els.pathSelect.innerHTML = Object.entries(PATHS).map(([key, path]) => `<option value="${key}">${esc(state.lang === "ar" ? path.nameAr : path.name)}</option>`).join("");
+      els.pathSelect.value = state.path;
+      moduleOptions();
+      renderNav();
+      renderAssigned();
+      renderStats();
+    }
+
+    function renderNav() {
+      els.modeNav.innerHTML = MODES.map(([mode, label, svg]) => {
+        const count = mode === "formula" ? FORMULAS.length : mode === "flashcards" ? FLASHCARDS.length : mode === "quiz" ? MCQS.length : mode === "practice" ? PRACTICE.length : "";
+        return `<button class="${state.mode === mode ? "active" : ""}" data-mode="${mode}">${icon(svg)}<span>${t(label)}</span><span class="count">${count}</span></button>`;
+      }).join("");
+    }
+
+    function renderStats() {
+      const exam = new Date(COURSE.examDate + "T00:00:00");
+      const today = new Date();
+      const days = Math.max(0, Math.ceil((exam - today) / 86400000));
+      const quizPct = percent(Math.max(state.bestQuiz, quizScore()), MCQS.length);
+      const stats = [
+        [t("daysLeft"), days, "9 Jun", Math.max(0, Math.min(100, 100 - days * 8))],
+        [t("topicsDone"), `${state.doneTopics.size}/${TOPICS.length}`, `${percent(state.doneTopics.size, TOPICS.length)}%`, percent(state.doneTopics.size, TOPICS.length)],
+        [t("cardsMastered"), `${state.mastered.size}/${FLASHCARDS.length}`, `${percent(state.mastered.size, FLASHCARDS.length)}%`, percent(state.mastered.size, FLASHCARDS.length)],
+        [t("bestQuiz"), `${quizPct}%`, `${Math.max(state.bestQuiz, quizScore())}/${MCQS.length}`, quizPct]
+      ];
+      els.stats.innerHTML = stats.map(s => `<article class="stat"><span>${esc(s[0])}</span><strong>${esc(s[1])}</strong><em>${esc(s[2])}</em><div class="stat-bar" style="--value:${esc(s[3])}%"><i></i></div></article>`).join("");
+    }
+
+    function assignedTopicIds() {
+      const name = state.name.trim() || "You";
+      let hash = 0;
+      for (const ch of name) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+      const picked = [];
+      const pool = [...TOPICS];
+      while (picked.length < 4 && pool.length) {
+        const idx = hash % pool.length;
+        picked.push(pool.splice(idx, 1)[0].id);
+        hash = (hash * 17 + 13) >>> 0;
+      }
+      return picked;
+    }
+
+    function renderAssigned() {
+      const ids = assignedTopicIds();
+      const name = state.name.trim() || "You";
+      els.assignedBox.innerHTML = `
+        <label>${t("assigned")}</label>
+        <div class="meta" style="margin-bottom:10px"><span class="tag">${esc(name)}</span><span class="tag">${esc(state.lang === "ar" ? PATHS[state.path].nameAr : PATHS[state.path].name)}</span></div>
+        <ul class="clean-list">${ids.map(id => `<li>${topicTitle(TOPICS.find(x => x.id === id))}</li>`).join("")}</ul>
+      `;
+    }
+
+    function topicTitle(topic) {
+      return esc(state.lang === "ar" ? (topic.titleAr || topic.title) : topic.title);
+    }
+
+    function filteredTopics() {
+      const q = state.query.trim().toLowerCase();
+      return TOPICS.filter(topic => {
+        const text = [
+          topic.title,
+          topic.titleAr,
+          topic.module,
+          topic.simple,
+          topic.simpleAr,
+          topic.tags.join(" "),
+          topic.definitions.join(" "),
+          topic.formulas.join(" "),
+          topic.notes.join(" ")
+        ].join(" ").toLowerCase();
+        return (!q || text.includes(q)) &&
+          (state.moduleFilter === "all" || topic.module === state.moduleFilter) &&
+          (state.difficultyFilter === "all" || topic.difficulty === state.difficultyFilter);
+      });
+    }
+
+    function render() {
+      setupChrome();
+      const map = {
+        overview: renderOverview,
+        detailed: renderDetailed,
+        formula: renderFormulaSheet,
+        flashcards: renderFlashcards,
+        quiz: renderQuiz,
+        short: renderShortAnswers,
+        practice: renderPractice,
+        cheat: renderCheatSheet,
+        checklist: renderChecklist
+      };
+      (map[state.mode] || renderOverview)();
+    }
+
+    function topicCard(topic, compact = false) {
+      const pathHit = pathTopics().includes(topic.id);
+      const done = state.doneTopics.has(topic.id);
+      const weight = topic.difficulty === "Core" ? 82 : topic.difficulty === "Medium" ? 62 : 46;
+      return `
+        <article class="topic-card ${pathHit ? "path-hit" : ""} ${done ? "done" : ""}">
+          <div class="meta">
+            <span class="tag">${esc(topic.module)}</span>
+            <span class="tag">${esc(topic.difficulty)}</span>
+            <span>${esc(topic.time)}</span>
+          </div>
+          <h3>${topicTitle(topic)}</h3>
+          <p>${esc(state.lang === "ar" ? topic.simpleAr : topic.simple)}</p>
+          ${compact ? "" : `<div class="simple"><strong>${t("simple")}:</strong> ${esc(state.lang === "ar" ? topic.simpleAr : topic.simple)}</div>`}
+          <div class="progress-track" style="--value:${done ? 100 : weight}%"><i></i></div>
+          <div class="meta">${topic.tags.map(x => `<span class="tag">${esc(x)}</span>`).join("")}</div>
+          <button class="small-action ${done ? "" : "primary"}" data-done-topic="${esc(topic.id)}">${done ? t("done") : t("markDone")}</button>
+        </article>`;
+    }
+
+    function renderOverview() {
+      const topics = filteredTopics();
+      const byModule = [...new Set(TOPICS.map(x => x.module))].map(module => [module, TOPICS.filter(x => x.module === module)]);
+      const activePath = PATHS[state.path];
+      const activeProgress = pathProgress(state.path);
+      const ready = readinessScore();
+      const next = nextTopic();
+      els.content.innerHTML = `
+        <section class="exam-hero">
+          <article class="hero-panel">
+            <div class="meta">
+              <span class="tag">${esc(state.lang === "ar" ? activePath.nameAr : activePath.name)}</span>
+              <span class="tag">${esc(activePath.eta)}</span>
+              <span class="tag">${esc(activeProgress.done)}/${esc(activeProgress.total)} topics</span>
+            </div>
+            <h3>${state.lang === "ar" ? "ابدأ من الموضوع الصحيح، ثم اختبر نفسك بسرعة." : "Start with the right topic, then prove it with questions."}</h3>
+            <p>${state.lang === "ar" ? "مسار مراجعة مركز: افتح الموضوع التالي، احفظ المعادلات، حل الأسئلة، ثم ارجع للموضوعات الضعيفة." : "A focused revision flow: open the next topic, lock in the formulas, answer questions, then revisit weak areas."}</p>
+            <div class="hero-actions">
+              <button class="small-action primary" data-jump-mode="detailed">${state.lang === "ar" ? "ابدأ الموضوع التالي" : "Study next topic"}</button>
+              <button class="small-action" data-jump-mode="formula">${t("formulaSheet")}</button>
+              <button class="small-action" data-jump-mode="quiz">${t("mcq")}</button>
+              <button class="small-action" data-jump-mode="cheat">${t("cheat")}</button>
+            </div>
+          </article>
+          <aside class="readiness-card">
+            <div class="readiness-score">
+              <div class="ring" style="--score:${ready}%"><strong>${ready}%</strong></div>
+              <div>
+                <h3>${state.lang === "ar" ? "جاهزية الاختبار" : "Exam readiness"}</h3>
+                <p>${state.lang === "ar" ? "النسبة تجمع إنجاز الموضوعات، البطاقات، الاختبار، وقائمة الجاهزية." : "Blends topic completion, flashcard mastery, quiz score, and checklist progress."}</p>
+              </div>
+            </div>
+            <div class="micro-list">
+              <div class="micro-item"><span class="micro-dot"></span><span>${state.lang === "ar" ? "أقوى خطوة الآن:" : "Best next move:"} ${topicTitle(next)}</span></div>
+              <div class="micro-item"><span class="micro-dot"></span><span>${state.lang === "ar" ? "هدف المسار:" : "Path aim:"} ${esc(activePath.aim)}</span></div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>${state.lang === "ar" ? "اختر طريقة المذاكرة" : "Choose a study path"}</h3>
+              <p>${state.lang === "ar" ? "كل مسار يعيد ترتيب الأولويات بدون حذف أي محتوى." : "Each path changes priority without removing any course coverage."}</p>
+            </div>
+          </div>
+          <div class="path-grid">
+            ${Object.entries(PATHS).map(([key, path]) => {
+              const progress = pathProgress(key);
+              return `
+                <article class="path-card ${state.path === key ? "active" : ""}">
+                  <div>
+                    <div class="meta"><span class="tag">${esc(path.eta)}</span><span>${progress.done}/${progress.total}</span></div>
+                    <h3>${esc(state.lang === "ar" ? path.nameAr : path.name)}</h3>
+                    <p>${esc(path.aim)}</p>
+                  </div>
+                  <div>
+                    <div class="progress-track" style="--value:${progress.pct}%"><i></i></div>
+                    <button class="small-action ${state.path === key ? "primary" : ""}" data-choose-path="${esc(key)}" style="margin-top:10px">${state.path === key ? (state.lang === "ar" ? "المسار الحالي" : "Current path") : (state.lang === "ar" ? "اختر" : "Select")}</button>
+                  </div>
+                </article>
+              `;
+            }).join("")}
+          </div>
+        </section>
+
+        <section class="review-lane">
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <h3>${state.lang === "ar" ? "الموضوع التالي المقترح" : "Recommended next topic"}</h3>
+                <p>${esc(next.source)} · ${esc(next.difficulty)} · ${esc(next.time)}</p>
+              </div>
+              <button class="small-action primary" data-jump-mode="detailed">${state.lang === "ar" ? "افتح الملاحظات" : "Open notes"}</button>
+            </div>
+            <div class="next-topic">
+              <div>
+                <h3>${topicTitle(next)}</h3>
+                <p>${esc(state.lang === "ar" ? next.simpleAr : next.simple)}</p>
+                <div class="formula-strip">${next.formulas.slice(0, 3).map(f => `<div class="equation">${esc(f)}</div>`).join("")}</div>
+              </div>
+              <button class="small-action" data-done-topic="${esc(next.id)}">${state.doneTopics.has(next.id) ? t("done") : t("markDone")}</button>
+            </div>
+          </article>
+          <aside class="panel">
+            <div class="panel-head"><div><h3>${state.lang === "ar" ? "حلقة المراجعة" : "Revision loop"}</h3><p>${state.lang === "ar" ? "طريقة مختصرة لكل جلسة." : "A compact flow for every session."}</p></div></div>
+            <div class="micro-list">
+              <div class="micro-item"><span class="micro-dot"></span><span>${state.lang === "ar" ? "اقرأ الموضوع التالي بتركيز." : "Read the recommended topic carefully."}</span></div>
+              <div class="micro-item"><span class="micro-dot"></span><span>${state.lang === "ar" ? "اكتب المعادلات من الذاكرة." : "Write formulas from memory."}</span></div>
+              <div class="micro-item"><span class="micro-dot"></span><span>${state.lang === "ar" ? "حل 10 أسئلة MCQ وراجع الأخطاء." : "Answer 10 MCQs and review misses."}</span></div>
+              <div class="micro-item"><span class="micro-dot"></span><span>${state.lang === "ar" ? "اختم بمسألة حسابية واحدة." : "Finish with one calculation problem."}</span></div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>${state.lang === "ar" ? "موضوعات المسار الحالي" : "Current path topics"}</h3>
+              <p>${esc(state.lang === "ar" ? activePath.nameAr : activePath.name)}: ${esc(activePath.note)}</p>
+            </div>
+            <button class="small-action" id="resetProgress">${t("reset")}</button>
+          </div>
+          <div class="topic-grid">
+            ${pathTopics().slice(0, 9).map(id => TOPICS.find(x => x.id === id)).filter(Boolean).map(topic => topicCard(topic, true)).join("")}
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>${state.lang === "ar" ? "تفصيل المقرر" : "Course breakdown"}</h3>
+              <p>${t("pathHint")}</p>
+            </div>
+          </div>
+          ${topics.length ? byModule.map(([module, list]) => {
+            const visible = list.filter(t => topics.includes(t));
+            if (!visible.length) return "";
+            return `<h3 style="margin:18px 0 10px">${esc(module)}</h3><div class="topic-grid">${visible.map(t => topicCard(t, true)).join("")}</div>`;
+          }).join("") : `<div class="empty">${t("noResults")}</div>`}
+        </section>
+        <section class="panel">
+          <div class="panel-head"><div><h3>${state.lang === "ar" ? "الأشكال المستخرجة" : "Extracted figures"}</h3><p>${state.lang === "ar" ? "كل الصور المرفقة من ملفات المحاضرات مستخدمة هنا." : "All figures extracted from the lecture files are included here."}</p></div></div>
+          ${renderFigures()}
+        </section>
+      `;
+    }
+
+    function renderDetailed() {
+      const topics = filteredTopics();
+      els.content.innerHTML = topics.length ? topics.map(topic => `
+        <section class="panel" id="${esc(topic.id)}">
+          <div class="panel-head">
+            <div>
+              <h3>${topicTitle(topic)}</h3>
+              <p>${esc(topic.source)} · ${esc(topic.difficulty)} · ${esc(topic.time)}</p>
+            </div>
+            <button class="small-action ${state.doneTopics.has(topic.id) ? "" : "primary"}" data-done-topic="${esc(topic.id)}">${state.doneTopics.has(topic.id) ? t("done") : t("markDone")}</button>
+          </div>
+          <div class="topic-detail">
+            <div>
+              <div class="simple"><strong>${t("simple")}:</strong> ${esc(state.lang === "ar" ? topic.simpleAr : topic.simple)}</div>
+              <h3>${t("notes")}</h3>
+              <ul class="notes-list">${topic.notes.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+              <h3>${t("examples")}</h3>
+              <ul class="notes-list">${topic.examples.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+              ${renderTopicFigures(topic)}
+            </div>
+            <aside>
+              <h3>${t("definitions")}</h3>
+              <ul class="notes-list">${topic.definitions.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+              <h3>${t("formulas")}</h3>
+              ${topic.formulas.map(x => `<div class="equation">${esc(x)}</div>`).join("<br>")}
+              <h3>${t("mistakes")}</h3>
+              <ul class="notes-list">${topic.mistakes.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+            </aside>
+          </div>
+        </section>
+      `).join("") : `<div class="empty">${t("noResults")}</div>`;
+    }
+
+    function renderTopicFigures(topic) {
+      const figs = (topic.figures || []).map(id => COURSE.figures.find(f => f.id === id)).filter(Boolean);
+      if (!figs.length) return "";
+      return `<h3>${state.lang === "ar" ? "أشكال مرتبطة" : "Related figures"}</h3><div class="figure-grid">${figs.map(figureCard).join("")}</div>`;
+    }
+
+    function figureCard(fig) {
+      return `<article class="figure-card"><img src="${esc(fig.src)}" alt="${esc(fig.title)}"><div><h3>${esc(fig.title)}</h3><p>${esc(fig.note)}</p></div></article>`;
+    }
+
+    function renderFigures() {
+      return `<div class="figure-grid">${COURSE.figures.map(figureCard).join("")}</div>`;
+    }
+
+    function renderFormulaSheet() {
+      const q = state.query.trim().toLowerCase();
+      const formulas = FORMULAS.filter(f => !q || [f.category, f.formula, f.meaning, f.pitfall].join(" ").toLowerCase().includes(q));
+      els.content.innerHTML = `
+        <section class="panel">
+          <div class="panel-head">
+            <div>
+              <h3>${t("formulaSheet")}</h3>
+              <p>${state.lang === "ar" ? "المعادلات والتعريفات الأساسية من ملفات المحاضرات." : "Core equations and definitions extracted from the lecture notes."}</p>
+            </div>
+          </div>
+          <div class="formula-grid">
+            ${formulas.map(f => `
+              <article class="formula-card">
+                <div class="meta"><span class="tag">${esc(f.category)}</span></div>
+                <h3>${esc(f.formula)}</h3>
+                <p>${esc(f.meaning)}</p>
+                <div class="simple"><strong>${state.lang === "ar" ? "انتبه" : "Watch"}:</strong> ${esc(f.pitfall)}</div>
+              </article>
+            `).join("") || `<div class="empty">${t("noResults")}</div>`}
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><div><h3>${state.lang === "ar" ? "الجداول المهمة" : "Important tables"}</h3><p>${state.lang === "ar" ? "أرقام ومقارنات مرشحة جدا للمراجعة." : "Numbers and comparisons worth memorizing."}</p></div></div>
+          ${TABLES.map(renderTable).join("")}
+        </section>
+        ${renderCalculator()}
+      `;
+    }
+
+    function renderTable(table) {
+      return `<section style="margin:16px 0"><h3>${esc(table.title)}</h3><div class="table-wrap"><table><thead><tr>${table.headers.map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${table.rows.map(row => `<tr>${row.map(cell => `<td>${esc(cell)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></section>`;
+    }
+
+    function renderCalculator() {
+      return `
+        <section class="panel" id="calculatorPanel">
+          <div class="panel-head"><div><h3>${t("calculator")}</h3><p>${state.lang === "ar" ? "تحويلات وحساب جذور حركية النقطة لمجموعة واحدة." : "Quick conversions and one-group roots for step reactivity."}</p></div></div>
+          <div class="calc-grid">
+            ${inputField("calcKeff", "k_eff", "1.0035")}
+            ${inputField("calcPcm", "ρ (pcm)", "100")}
+            ${inputField("calcBeta", "β", "0.006502")}
+            ${inputField("calcLambda", "λ (s^-1)", "0.0767")}
+            ${inputField("calcGen", "Λ (s)", "0.00005")}
+            ${inputField("calcTime", "time t (s)", "60")}
+          </div>
+          <div style="margin-top:12px"><button class="small-action primary" id="calcButton">${t("calculate")}</button></div>
+          <div class="calc-result" id="calcResult"></div>
+        </section>
+      `;
+    }
+
+    function inputField(id, label, value) {
+      return `<label><span class="field-label">${esc(label)}</span><input class="input" id="${id}" value="${esc(value)}" inputmode="decimal"></label>`;
+    }
+
+    function calculate() {
+      const val = id => Number(document.getElementById(id).value);
+      const keff = val("calcKeff");
+      const pcmInput = val("calcPcm");
+      const beta = val("calcBeta");
+      const lambda = val("calcLambda");
+      const gen = val("calcGen");
+      const time = val("calcTime");
+      const rhoFromK = (keff - 1) / keff;
+      const rho = pcmInput / 100000;
+      const dollars = rho / beta;
+      const jump = beta / (beta - rho);
+      const b = lambda + (beta - rho) / gen;
+      const c = -lambda * rho / gen;
+      const disc = b * b - 4 * c;
+      const root = Math.sqrt(Math.max(0, disc));
+      const w1 = (-b + root) / 2;
+      const w2 = (-b - root) / 2;
+      const period = w1 === 0 ? Infinity : 1 / w1;
+      const approx = lambda * rho / (beta - rho);
+      const nt = jump * Math.exp(w1 * time);
+      const data = [
+        ["ρ from k_eff", `${rhoFromK.toExponential(5)} = ${(rhoFromK * 100000).toFixed(1)} pcm`],
+        ["Dollars / cents", `${dollars.toFixed(3)}$ = ${(dollars * 100).toFixed(1)} cents`],
+        ["Prompt jump/drop", Number.isFinite(jump) ? jump.toFixed(4) : "invalid near β"],
+        ["ω₁", `${w1.toFixed(6)} s^-1`],
+        ["ω₂", `${w2.toFixed(3)} s^-1`],
+        ["T = 1/ω₁", Number.isFinite(period) ? `${period.toFixed(2)} s` : "infinite"],
+        ["Approx ω₁", `${approx.toFixed(6)} s^-1`],
+        [`n(${time}s)/n₀ approx`, Number.isFinite(nt) ? nt.toFixed(4) : "check inputs"]
+      ];
+      document.getElementById("calcResult").innerHTML = data.map(([label, value]) => `<div class="mini"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join("");
+    }
+
+    function renderFlashcards() {
+      const cards = FLASHCARDS.filter(c => !state.query || [c.front, c.back, c.tag].join(" ").toLowerCase().includes(state.query.toLowerCase()));
+      if (!cards.length) {
+        els.content.innerHTML = `<div class="empty">${t("noResults")}</div>`;
+        return;
+      }
+      state.flashIndex = Math.min(state.flashIndex, cards.length - 1);
+      const card = cards[state.flashIndex];
+      const mastered = state.mastered.has(card.id);
+      els.content.innerHTML = `
+        <section class="flash-layout">
+          <article class="flashcard">
+            <span class="card-index">${state.flashIndex + 1}/${cards.length} · ${esc(card.tag)}</span>
+            <div>
+              <h3>${esc(state.flashBack ? card.back : card.front)}</h3>
+              <p>${state.flashBack ? esc(card.front) : (state.lang === "ar" ? "اقلب البطاقة لرؤية الإجابة." : "Flip the card to reveal the answer.")}</p>
+            </div>
+          </article>
+          <aside class="panel">
+            <div class="panel-head"><div><h3>${t("flashcards")}</h3><p>${state.lang === "ar" ? "استخدم الإتقان لتتبع الحفظ." : "Use mastery to track recall."}</p></div></div>
+            <div class="seg">
+              <button id="prevCard">${t("prev")}</button>
+              <button class="active" id="flipCard">${t("flip")}</button>
+              <button id="nextCard">${t("next")}</button>
+            </div>
+            <div style="margin-top:12px">
+              <button class="small-action ${mastered ? "" : "primary"}" id="masterCard">${mastered ? t("mastered") : t("notMastered")}</button>
+            </div>
+            <div class="simple" style="margin-top:12px">${state.lang === "ar" ? "نصيحة: إذا لم تستطع الإجابة قبل القلب، لا تعتبر البطاقة متقنة." : "Rule: if you cannot answer before flipping, keep it in review."}</div>
+          </aside>
+        </section>
+      `;
+    }
+
+    function renderQuiz() {
+      let correct = 0;
+      const answered = Object.keys(state.quizAnswers).length;
+      MCQS.forEach(q => { if (state.quizAnswers[q.id] === q.answer) correct++; });
+      state.bestQuiz = Math.max(state.bestQuiz, correct);
+      localStorage.setItem("ne411.bestQuiz", String(state.bestQuiz));
+      els.content.innerHTML = `
+        <section class="panel">
+          <div class="panel-head">
+            <div><h3>${t("mcq")}</h3><p>${t("score")}: ${correct}/${MCQS.length} · ${answered}/${MCQS.length} answered</p></div>
+            <button class="small-action" id="resetQuiz">${state.lang === "ar" ? "إعادة الاختبار" : "Reset quiz"}</button>
+          </div>
+          ${MCQS.map(q => renderQuestion(q)).join("")}
+        </section>
+      `;
+      renderStats();
+    }
+
+    function renderQuestion(q) {
+      const chosen = state.quizAnswers[q.id];
+      return `<article class="question-card" style="padding:15px;margin:12px 0">
+        <h3>${esc(q.id.toUpperCase())}. ${esc(q.q)}</h3>
+        <div class="quiz-options">
+          ${q.options.map((opt, i) => {
+            let cls = "";
+            if (chosen !== undefined) cls = i === q.answer ? "correct" : i === chosen ? "wrong" : "";
+            return `<button class="${cls}" data-quiz="${esc(q.id)}" data-choice="${i}">${esc(opt)}</button>`;
+          }).join("")}
+        </div>
+        <div class="answer-box ${chosen !== undefined ? "visible" : ""}"><strong>${state.lang === "ar" ? "الشرح" : "Explanation"}:</strong> ${esc(q.why)}</div>
+      </article>`;
+    }
+
+    function renderShortAnswers() {
+      els.content.innerHTML = `
+        <section class="panel">
+          <div class="panel-head"><div><h3>${t("short")}</h3><p>${state.lang === "ar" ? "اكتب إجابتك ثم قارنها بالإجابة المتوقعة." : "Write your answer, then compare with the expected answer."}</p></div></div>
+          ${SHORT_ANSWERS.map(sa => `
+            <article class="question-card" style="padding:15px;margin:12px 0">
+              <h3>${esc(sa.prompt)}</h3>
+              <textarea class="textarea" placeholder="${state.lang === "ar" ? "اكتب إجابتك هنا..." : "Write your answer here..."}"></textarea>
+              <div style="margin-top:10px"><button class="small-action" data-reveal="${esc(sa.id)}">${t("reveal")}</button></div>
+              <div class="answer-box" id="${esc(sa.id)}"><strong>${state.lang === "ar" ? "إجابة متوقعة" : "Expected answer"}:</strong> ${esc(sa.answer)}</div>
+            </article>
+          `).join("")}
+        </section>
+      `;
+    }
+
+    function renderPractice() {
+      els.content.innerHTML = `
+        <section class="panel">
+          <div class="panel-head"><div><h3>${t("practice")}</h3><p>${state.lang === "ar" ? "مسائل حسابية مبنية من ملاحظات المحاضرة." : "Calculation practice built from the lecture notes."}</p></div></div>
+          ${PRACTICE.map(problem => `
+            <article class="question-card" style="padding:15px;margin:12px 0">
+              <div class="meta"><span class="tag">${esc(problem.id.toUpperCase())}</span></div>
+              <h3>${esc(problem.title)}</h3>
+              <p>${esc(problem.problem)}</p>
+              <div style="margin-top:10px"><button class="small-action" data-reveal="${esc(problem.id)}">${t("reveal")}</button></div>
+              <div class="answer-box" id="${esc(problem.id)}"><ol class="notes-list">${problem.solution.map(step => `<li>${esc(step)}</li>`).join("")}</ol></div>
+            </article>
+          `).join("")}
+        </section>
+        ${renderCalculator()}
+      `;
+    }
+
+    function renderCheatSheet() {
+      const core = TOPICS.filter(tpc => ["reactivity-basics", "reactivity-units", "doppler", "mtc", "void", "pke-equations", "eigenvalue-method", "prompt-jump", "six-group"].includes(tpc.id));
+      els.content.innerHTML = `
+        <section class="panel">
+          <div class="panel-head"><div><h3>${t("cheat")}</h3><p>${state.lang === "ar" ? "صفحة واحدة للطباعة أو آخر مراجعة." : "One-page style final review for printing or final pass."}</p></div></div>
+          <div class="formula-grid">
+            ${core.map(tpc => `
+              <article class="formula-card">
+                <h3>${topicTitle(tpc)}</h3>
+                <div class="simple">${esc(state.lang === "ar" ? tpc.simpleAr : tpc.simple)}</div>
+                ${tpc.formulas.slice(0, 4).map(f => `<div class="equation">${esc(f)}</div>`).join("")}
+                <ul class="notes-list">${tpc.mistakes.slice(0, 2).map(m => `<li>${esc(m)}</li>`).join("")}</ul>
+              </article>
+            `).join("")}
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><div><h3>${state.lang === "ar" ? "أرقام لا تنساها" : "Numbers to memorize"}</h3></div></div>
+          <div class="topic-grid">
+            ${[
+              ["β_eff U-235", "≈0.0065; 1$ ≈ 650 pcm"],
+              ["Prompt neutrons", "~10^-14 s after fission"],
+              ["Delayed neutron timing", "0.01 to 10 s range"],
+              ["λ one-group", "0.0767 s^-1; lifetime 13.04 s"],
+              ["Λ LWR", "~5×10^-5 s"],
+              ["PWR BOC boron", "~1000-1900 ppm"],
+              ["PWR EOC boron", "~0-10 ppm"],
+              ["Safety rods", "SCRAM insertion about 1-3 s"],
+              ["Doppler coefficient", "-2 to -5 pcm/°C at BOC"],
+              ["PWR void coefficient", "-150 to -300 pcm/% void"],
+              ["BWR CPR safety limit in notes", "1.9"],
+              ["One-group accuracy", "Better than 5% for |ρ| < 2000 pcm"]
+            ].map(([a, b]) => `<article class="topic-card"><h3>${esc(a)}</h3><p>${esc(b)}</p></article>`).join("")}
+          </div>
+        </section>
+      `;
+    }
+
+    function renderChecklist() {
+      els.content.innerHTML = `
+        <section class="panel">
+          <div class="panel-head">
+            <div><h3>${t("checklist")}</h3><p>${state.lang === "ar" ? "علّم ما تستطيع فعله بدون الرجوع للملاحظات." : "Check only what you can do without looking at the notes."}</p></div>
+          </div>
+          ${CHECKLIST.map((item, i) => `
+            <label class="check-row">
+              <input type="checkbox" data-check="${i}" ${state.checklist.has(String(i)) ? "checked" : ""}>
+              <span>${esc(item)}</span>
+            </label>
+          `).join("")}
+        </section>
+        <section class="panel">
+          <div class="panel-head"><div><h3>${t("uploadTitle")}</h3><p>${state.lang === "ar" ? "فحص تغطية الملفات المرفوعة." : "Coverage check for uploaded materials."}</p></div></div>
+          <ul class="notes-list">
+            <li>Reactivity_Lecture_Notes.docx: all 11 listed sections are represented, including units, rods, boron, Doppler, MTC, void coefficient, comparison tables, and practice problems.</li>
+            <li>Point Kinetics Analytical_lecture Note.docx: delayed neutron physics, one-group PKE, matrix/eigenvalue solution, inhour equation, prompt jump, special cases, six-group extension, tables, figures, and practice problems are represented.</li>
+            <li>All 5 embedded figures were extracted and used in the site.</li>
+            <li>Formula sheet includes the equations recovered from text, tables, and Word equation objects.</li>
+          </ul>
+        </section>
+      `;
+    }
+
+    function bind() {
+      els.modeNav.addEventListener("click", event => {
+        const button = event.target.closest("[data-mode]");
+        if (!button) return;
+        setMode(button.dataset.mode);
+      });
+      els.pathSelect.addEventListener("change", () => {
+        state.path = els.pathSelect.value;
+        localStorage.setItem("ne411.path", state.path);
+        render();
+      });
+      els.studentName.addEventListener("input", () => {
+        state.name = els.studentName.value;
+        localStorage.setItem("ne411.name", state.name);
+        renderAssigned();
+      });
+      els.searchInput.addEventListener("input", () => {
+        state.query = els.searchInput.value;
+        render();
+      });
+      els.moduleFilter.addEventListener("change", () => {
+        state.moduleFilter = els.moduleFilter.value;
+        render();
+      });
+      els.difficultyFilter.addEventListener("change", () => {
+        state.difficultyFilter = els.difficultyFilter.value;
+        render();
+      });
+      els.themeToggle.addEventListener("click", () => {
+        state.theme = state.theme === "dark" ? "light" : "dark";
+        localStorage.setItem("ne411.theme", state.theme);
+        render();
+      });
+      els.langToggle.addEventListener("click", () => {
+        state.lang = state.lang === "en" ? "ar" : "en";
+        localStorage.setItem("ne411.lang", state.lang);
+        render();
+      });
+      els.printButton.addEventListener("click", () => window.print());
+      els.openMenu.addEventListener("click", () => els.sidebar.classList.add("open"));
+      document.addEventListener("click", event => {
+        if (event.target.closest("#openMenu") || event.target.closest("#sidebar")) return;
+        if (innerWidth <= 1020) els.sidebar.classList.remove("open");
+      });
+      els.content.addEventListener("click", event => {
+        const jump = event.target.closest("[data-jump-mode]");
+        if (jump) {
+          setMode(jump.dataset.jumpMode);
+          return;
+        }
+        const choosePath = event.target.closest("[data-choose-path]");
+        if (choosePath) {
+          state.path = choosePath.dataset.choosePath;
+          localStorage.setItem("ne411.path", state.path);
+          render();
+          return;
+        }
+        const done = event.target.closest("[data-done-topic]");
+        if (done) {
+          const id = done.dataset.doneTopic;
+          state.doneTopics.has(id) ? state.doneTopics.delete(id) : state.doneTopics.add(id);
+          persistSet("ne411.doneTopics", state.doneTopics);
+          render();
+          return;
+        }
+        const reveal = event.target.closest("[data-reveal]");
+        if (reveal) {
+          const box = document.getElementById(reveal.dataset.reveal);
+          if (box) {
+            box.classList.toggle("visible");
+            reveal.textContent = box.classList.contains("visible") ? t("hide") : t("reveal");
+          }
+          return;
+        }
+        const quiz = event.target.closest("[data-quiz]");
+        if (quiz) {
+          state.quizAnswers[quiz.dataset.quiz] = Number(quiz.dataset.choice);
+          localStorage.setItem("ne411.quizAnswers", JSON.stringify(state.quizAnswers));
+          renderQuiz();
+          return;
+        }
+        if (event.target.closest("#resetProgress")) {
+          if (confirm("Reset NE-411 progress?")) {
+            ["ne411.doneTopics", "ne411.mastered", "ne411.checklist", "ne411.quizAnswers", "ne411.bestQuiz"].forEach(k => localStorage.removeItem(k));
+            state.doneTopics.clear();
+            state.mastered.clear();
+            state.checklist.clear();
+            state.quizAnswers = {};
+            state.bestQuiz = 0;
+            render();
+          }
+          return;
+        }
+        if (event.target.closest("#resetQuiz")) {
+          state.quizAnswers = {};
+          localStorage.setItem("ne411.quizAnswers", "{}");
+          renderQuiz();
+          return;
+        }
+        if (event.target.closest("#prevCard")) {
+          state.flashIndex = Math.max(0, state.flashIndex - 1);
+          state.flashBack = false;
+          localStorage.setItem("ne411.flashIndex", state.flashIndex);
+          renderFlashcards();
+          return;
+        }
+        if (event.target.closest("#nextCard")) {
+          state.flashIndex = Math.min(FLASHCARDS.length - 1, state.flashIndex + 1);
+          state.flashBack = false;
+          localStorage.setItem("ne411.flashIndex", state.flashIndex);
+          renderFlashcards();
+          return;
+        }
+        if (event.target.closest("#flipCard")) {
+          state.flashBack = !state.flashBack;
+          renderFlashcards();
+          return;
+        }
+        if (event.target.closest("#masterCard")) {
+          const card = FLASHCARDS[state.flashIndex];
+          state.mastered.has(card.id) ? state.mastered.delete(card.id) : state.mastered.add(card.id);
+          persistSet("ne411.mastered", state.mastered);
+          render();
+          return;
+        }
+        if (event.target.closest("#calcButton")) {
+          calculate();
+        }
+      });
+      els.content.addEventListener("change", event => {
+        const check = event.target.closest("[data-check]");
+        if (!check) return;
+        check.checked ? state.checklist.add(check.dataset.check) : state.checklist.delete(check.dataset.check);
+        persistSet("ne411.checklist", state.checklist);
+      });
+    }
+
+    bind();
+    render();
+  </script>
+</body>
+</html>
